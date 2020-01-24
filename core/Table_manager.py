@@ -28,7 +28,7 @@ class Construct_tables():
                                                 'CountyName','CountyNumber',
                                                 'Latitude','Longitude',
                                                 'WellName','FederalWell',
-                                                'IndianWell',#'iAPINumber',
+                                                'IndianWell','data_source',
                                                 'iUploadKey'])
         self.allrec = fft.FF_table(keyf='reckey',pkldir=pkldir,
                                    other_fields=['iSupplier',
@@ -37,7 +37,7 @@ class Construct_tables():
                                                  'ingKeyPresent',
                                                  'iUploadKey', #'iAPINumber',
                                                  'iCASNumber','iIngredientName',
-                                                 'ireckey'
+                                                 'record_flags','ireckey'
                                                  ])
         self.tables = {'cas' : self.cas,    
                        'supplier' : self.supplier,
@@ -45,7 +45,6 @@ class Construct_tables():
                        'purpose' : self.purpose,
                        'tradename': self.tradename,
                        'ingName' : self.ingName,
-                       #'location' : self.location,
                        'event' : self.event,
                        'allrec' : self.allrec,
                        }
@@ -70,28 +69,12 @@ class Construct_tables():
             print(f' -- {tn} has {name}...')
             self.tables[tn].construct_df(raw_df)
 
-    def mapTables(self):
-        self.tableMap = {}
-        for tn in self.tables.keys():
-            tab = self.tables[tn]
-            self.tableMap[tab.keyf] = (tn,'i'+tab.keyf)
-            for other in tab.other_fields:
-                if other[0]!='i':  # ignore indexes
-                    self.tableMap[other] = (tn,'i'+tab.keyf)
-        return self.tableMap
-        
     def addToTables(self,df):
         for tn in self.tables:
             self.tables[tn]._construct_from_df(df)
             
-# =============================================================================
-#     def completeTables(self):
-#         for tn in self.tables:
-#             self.tables[tn].complete_df()
-#             
-# =============================================================================
     def update_table_df(self,df,tn):
-        self.tables[tn].df = df
+        self.tables[tn].df = df.copy()
         self.tables[tn].update()
             
     def pickleAll(self,tmp='./tmp/'):
@@ -102,15 +85,16 @@ class Construct_tables():
         for tn in self.tables:
             self.tables[tn].unPickleComponents()
 
-    def listTables(self):
+    def listTables(self,show_all=False):
         for table in self.tables:
-            print(f'Table keyed with {self.tables[table].keyf} has {self.tables[table].num_entries()} records')
-            #self.tables[table].show_diag()
+            print(f'Table "{table}" keyed with {self.tables[table].keyf} has {self.tables[table].num_entries()} records')
+            if show_all: self.tables[table].show_diag()
 
 ### ----  fetch some standard data frames
             
-    def get_df_cas(self,cas_fields=[],ing_fields=[],sup_fields=[],pur_fields=[],
-                   event_fields=['UploadKey','iUploadKey',
+    def get_df_cas(self,cas_fields=[],ing_fields=[],
+                   op_fields=[],sup_fields=[],pur_fields=[],
+                   event_fields=['UploadKey','iUploadKey','iOperatorName',
                                  'APINumber','TotalBaseWaterVolume'],
                                  # force explicit use of keep/remove codes
                                  keepcodes = 'empty', #'M|3|A',
@@ -120,18 +104,12 @@ class Construct_tables():
         from those tables (also sup and pur fields)
         keepcodes and removecodes must be supplied explicitly"""
         df = self.tables['allrec'].get_df()
-        print(f'Initial length before filter:  {len(df.ireckey)}')
+        print(f'   Initial length before filter:  {len(df.ireckey)}')
         assert keepcodes!='empty', 'Must specify keepcodes!'
         assert removecodes!='empty', 'Must specify removecodes!'
         if keepcodes: df = df[df.record_flags.str.contains(keepcodes)]
         if removecodes: df = df[~df.record_flags.str.contains(removecodes)]
-        print(f'               after  filter:  {len(df.ireckey)}')
-        
-# =============================================================================
-#         test = self.tables['event'].get_df(event_fields)
-#         print(f'TEST: {len(test)} iupload: {len(test.iUploadKey.unique())} up: {len(test.UploadKey.unique())}')
-#         test[test.UploadKey.duplicated(keep=False)].to_csv('./tmp/duplicated.csv')
-# =============================================================================
+        print(f'                  after  filter:  {len(df.ireckey)}')
         
         
         df = df.merge(self.tables['event'].get_df(event_fields),
@@ -141,6 +119,9 @@ class Construct_tables():
                       how='left',validate='m:1')
         df = df.merge(self.tables['supplier'].get_df(sup_fields),
                       on='iSupplier',
+                      how='left',validate='m:1')
+        df = df.merge(self.tables['operator'].get_df(op_fields),
+                      on='iOperatorName',
                       how='left',validate='m:1')
         df = df.merge(self.tables['purpose'].get_df(pur_fields),
                       on='iPurpose',how='left',validate='m:1')

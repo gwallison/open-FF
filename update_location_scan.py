@@ -10,7 +10,6 @@ Change the file handles at the top of this code to appropriate directories.
     
 """
 from geopy.distance import geodesic
-#import datetime
 import pandas as pd
 import numpy as np
 import core.Construct_set as const_set
@@ -52,22 +51,6 @@ def get_upload_ref():
     return pd.read_csv(upload_ref_fn,low_memory=False)
 
 
-# =============================================================================
-# 
-# ##################################################################
-# # construct upload_ref -- this performed ONE TIME to initialize!
-# uploadref = tab_const.tables['event'].get_df(fields=['UploadKey'])
-# uploadref['date_added'] = '2019-10-28'
-# uploadref['bgStateName'] = np.NaN
-# uploadref['bgCountyName'] = np.NaN
-# uploadref['bgLatitude'] = np.NaN
-# uploadref['bgLongitude'] = np.NaN
-# uploadref['loc_flags'] = ''
-# uploadref['google_addr_key'] = np.NaN
-# save_upload_ref(uploadref)
-# ##################################################################
-# 
-# =============================================================================
 
 df = tab_const.get_df_location(['Latitude','Longitude',
                                 'StateNumber','CountyNumber',

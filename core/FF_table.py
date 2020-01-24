@@ -11,26 +11,18 @@ class FF_table():
     
     def __init__(self,keyf='UploadKey',
                  other_fields=[],
-                 idx_sources=[],
+                 #idx_sources=[],
                  pkldir = './tmp/'):
         self.keyf = keyf
         self.other_fields = other_fields
         self.pkldir = pkldir
         self.pkl_fn = self.pkldir+self.keyf+'_df.pkl'
-        #self.keyname = 'p'+keyf
-        #self.idx_sources = idx_sources 
-        #self.key_to_idx = {}
-        #self.idx_to_key = {}
         self.df = pd.DataFrame()
-        #self.idx_kernel =  pd.DataFrame()
         
     def construct_df(self,raw_df):
         self.df = raw_df.groupby(self.keyf,as_index=False)[self.other_fields].first()
-        #if self.keyf=='UploadKey':
-        #    print(f'FF_Table (event) {len(self.df)}')
         
     def pickleComponents(self):
-        #print(f'Pickling {self.keyf} with fn_prefix= {fn_prefix}')
         self.df.to_pickle(self.pkl_fn)
 
     def unPickleComponents(self):
@@ -46,7 +38,6 @@ class FF_table():
         """used to put new columns into the data set
         Assumes incoming df has just index and columns to be added"""
         self.df = pd.merge(self.df,new_df,on='i'+self.keyf)
-        #print(f'>> merging {self.keyf}; {self.df.columns}')
         self.update()
 
     def replace_df(self,new_df=None,add_all=False,added_fields=[]):
@@ -71,3 +62,5 @@ class FF_table():
         for col in list(self.df.columns):
             if self.df[col].dtype in ['int64','object']:
                 print(f' Column < {col} > has {len(self.df[col].unique())} unique items')
+            else:
+                print(f' Column < {col} > is dtype: {self.df[col].dtype}')

@@ -1,13 +1,8 @@
-Description of FF-full Sources files
+Description of open_FF Sources files
 ------------------------------------
 
 APIStateCountyCodesFullList.csv - downloaded list of all state and county codes 
   used in constructing the API Numbers. 
-
-county_data_wikipedia_MichaelJ.csv - list from a user wikipedia site that includes 
-  the lat/lon of the center of all US counties; we
-  use these data to validate a given event's location.  If the data in FF appear to 
-  be in error, we use these centers as the 'best guess'. 
 
 cas_labels.csv
 

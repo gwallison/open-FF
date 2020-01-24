@@ -35,7 +35,7 @@ class Categorize_CAS():
         """
         self.tab_man = tab_manager
         self.df = self.tab_man.get_df_cas(keepcodes='',removecodes='')
-        #print(f'init cat_rec df len = {len(self.df)}, reckey len = {len(self.df.reckey.unique())}')
+
         self.cas_ref_dict = self.get_cas_ref_dict(sources+'CAS_ref_and_names.csv')
         
         self._get_cas_field_cat()
@@ -47,13 +47,12 @@ class Categorize_CAS():
         self.replace_dict = self._get_replacement_cas() 
         self.v_b_e_fn = sources+'valid_but_empty.csv'
         self.valid_but_empty = self._get_valid_but_empty() #list
-        #self.proprietary_list = sources+'CAS_labels_for_proprietary.csv'
-        #self.refdir = './CAS_ref/out/'
+
     
     def get_cas_ref_dict(self,fn):
         df = pd.read_csv(fn,quotechar='$')
         dic = {}
-        #casl = list(df.cas_number.keys())
+
         for i in df.index:
             dic[df.at[i,'cas_number']] = df.at[i,'ing_name'] 
         return dic
@@ -91,7 +90,7 @@ class Categorize_CAS():
         return cas
         
     def _clean_CAS_for_comparison(self):
-        #print('clean cas for comparison')
+
         self.cas_field_cat['cas_clean'] = self.cas_field_cat.CASNumber.str.replace(r'[^0-9-]','')
         self.cas_field_cat['zero_corrected'] = self.cas_field_cat.cas_clean.map(lambda x: ct.correct_zeros(x) )
         # replace the handful of obsolete cas numbers with widely used number
@@ -173,28 +172,18 @@ class Categorize_CAS():
                                 self.df.record_flags.str[:]+'-5',
                                 self.df.record_flags)
         print(f'Total Non_caslike but quant = {len(self.df[self.df.record_flags.str.contains("4",regex=False)])}')
-#        print(f'Total Non_caslike but not quant = {len(t[t.record_flags==5])}')
         
 ### Phase III - check for ingredient duplicates within events
     def _flag_duplicated_records(self):
         self.df['dup'] = self.df.duplicated(subset=['UploadKey','IngredientName',
                                        'CASNumber','MassIngredient','PercentHFJob'],
                                         keep=False)
-        #print(f'df len = {len(self.df)}, reckey len = {len(self.df.reckey.unique())}')
         c0 = self.df.ingKeyPresent
         cP = self.df.record_flags.str.contains('P',regex=False)
         dups = self.df[(self.df.dup)&(c0)&(cP)].copy()
         c1 = dups.Supplier.str.lower().isin(['listed above'])
         c2 = dups.Purpose.str.lower().str[:9]=='see trade'
         dups['redundant_rec'] = c1&c2
-        
-# =============================================================================
-#         dups['dup_reckey'] = dups.reckey.duplicated(keep=False)
-#         upk = list(dups[dups.dup_reckey].UploadKey.unique())
-#         print(f'Dup repkeys at: {upk}')
-#         print(f' Expected redundant total: {dups.redundant_rec.sum()}, {c1.sum()}, {c2.sum()}')
-#         print(f'dups len = {len(dups)}, reckey len = {len(dups.reckey.unique())}')
-# =============================================================================
         
         self.df = pd.merge(self.df,dups[['reckey','redundant_rec']],
                            on='reckey',how='left',validate='m:1')
@@ -212,16 +201,9 @@ class Categorize_CAS():
         print(f'Total redundant records flagged: {len(self.df[self.df.record_flags.str.contains("R",regex=False)])}')
         
     def do_all(self):
-        #print(f'preI df len = {len(self.df)}, reckey len = {len(self.df.reckey.unique())}')
-        #print(f'pre-phase 1:  Len df: {len(self.df)} ')
         self.phaseI()
-        #print(f'preII df len = {len(self.df)}, reckey len = {len(self.df.reckey.unique())}')
-        #print(f'phase 1:  Len df: {len(self.df)} ')
         self.phaseII()
-        #print(f'pre III df len = {len(self.df)}, reckey len = {len(self.df.reckey.unique())}')
-        #print(f'phase 2:  Len df: {len(self.df)} ')
         self.phaseIII()
-        #print(f'postIII df len = {len(self.df)}, reckey len = {len(self.df.reckey.unique())}')
         # saves new flags
         self.tab_man.tables['allrec'].replace_df(self.df)
         gb = self.df.groupby('iCASNumber',as_index=False)['bgCAS',

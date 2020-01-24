@@ -4,9 +4,9 @@ Created on Wed Apr 17 13:32:22 2019
 
 @author: GAllison
 
-Several things to do initially to the allrec table:
+Some things to do initially to the allrec table:
      - add the bgSupplier column (in the supplier table)
-     - initialize the record_flag column 
+
      - flag empty events 
 The earliest FracFocus data on the pdf website is not included in 
 the bulk download.  There are placeholder records in the data set that include
@@ -20,7 +20,7 @@ distort any estimates of 'presence/absence' of materials.
 Luckily, the organization SkyTruth scraped a lot of that data from the pdf files
 and makes it available at their website.  We incorporate it here.
 
-    - flag events with multiple disclosures
+    - flag events with multiple disclosures (done in Clean_event.py)
 The FracFocus data set contains multiple versions of some fracking events.
 Here we first find the duplicates (using the API number and the fracking date).
 NOTE:  For this version of the FF database, we mark ALL duplicates for removal.
@@ -50,10 +50,8 @@ class Clean_allrec():
                                        sources=self.sources)
         self.tab_man.update_table_df(df,'supplier')
         
-        print('adding flag template in "record_flags"')
         df = self.tab_man.tables['allrec'].get_df() # fetch all
         
-        df['record_flags'] = '0'
         # if there is no IngredientKey, there are no ingredients. Flag for later removal
         print('flagging empty events')
         df.record_flags = np.where(df.ingKeyPresent==False,
@@ -65,7 +63,7 @@ class Clean_allrec():
         print('flagging events with multiple disclosures')
         t = self.tab_man.tables['event'].get_df(['UploadKey','iUploadKey',
                                                  'date','APINumber'])
-        t = pd.merge(t,df[['iUploadKey','reckey']][df.record_flags=='0'],
+        t = pd.merge(t,df[['iUploadKey','reckey']][~df.record_flags.str.contains('1')],
                      on='iUploadKey',how='right',validate='1:m')
         t = t.groupby(['UploadKey','date','APINumber'],as_index=False)['reckey','iUploadKey'].first()
         t['dupes'] = t.duplicated(subset=['APINumber','date'],keep=False)

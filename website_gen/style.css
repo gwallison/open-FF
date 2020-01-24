@@ -1,0 +1,26 @@
+
+h1 {
+    padding: 100px;
+    background-color: #DDE0E3;    /* Light gray */
+
+}
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+    padding: 10px;
+    margin: 10px;
+    }
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.cas {
+    font-size: 1.6em;
+    background-color: #DDE0E3;
+    }
+    
+body {
+     font-family: "Arial", "Helvetica", sans-serif;
+    }
+    

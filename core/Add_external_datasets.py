@@ -10,7 +10,7 @@ def add_Elsner_table(tab_manager=None,sources='./sources/',
                      outdir='./out/',
                      ehfn='elsner_corrected_table.csv'):
     """Add the Elsner/Hoelzer data table. """
-    print('Adding Elsner/Hoelzer table to CAS')
+    print('Adding Elsner/Hoelzer table to CAS table')
     casdf = tab_manager.tables['cas'].get_df()
     ehdf = pd.read_csv(sources+ehfn,quotechar='$')
     # checking overlap first:
@@ -28,7 +28,28 @@ def add_Elsner_table(tab_manager=None,sources='./sources/',
 
     mg = pd.merge(casdf,ehdf,left_on='bgCAS',right_on='eh_CAS',
                   how='left',validate='m:1')
-    #print(mg.columns)
+
     tab_manager.tables['cas'].replace_df(mg,add_all=True)
-    #print(tab_manager.tables['cas'].df.columns)
+
+    
+def add_TEDX_ref(tab_manager=None,sources='./sources/',
+                 outdir='./out/',
+                 tedx_fn = 'TEDX_EDC_trimmed.xls'):
+    """Add TEDX link"""
+    print('Adding TEDX link to CAS table')
+    casdf = tab_manager.tables['cas'].get_df()
+    tedxdf = pd.read_excel(sources+tedx_fn)
+    tedx_cas = tedxdf.CAS_Num.unique().tolist()
+    casdf['is_on_TEDX'] = casdf.bgCAS.isin(tedx_cas)
+    tab_manager.tables['cas'].replace_df(casdf,add_all=True)
+    
+def add_TSCA_ref(tab_manager=None,sources='./sources/',
+                 outdir='./out/',
+                 tsca_fn = 'TSCAINV_092019.csv'):
+    print('Adding TSCA to CAS table')
+    casdf = tab_manager.tables['cas'].get_df()
+    tscadf = pd.read_csv(sources+tsca_fn)
+    tsca_cas = tscadf.CASRN.unique().tolist()
+    casdf['is_on_TSCA'] = casdf.bgCAS.isin(tsca_cas)
+    tab_manager.tables['cas'].replace_df(casdf,add_all=True)
     

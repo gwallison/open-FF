@@ -10,14 +10,14 @@ data is to be processed.
 In phase 1, we read in all the data, and identify any valid CAS numbers
 that have not been seen before.  The output of this code is the file 
 /tmp/cas_to_check.csv.  If you run this code and that file has no entries,
-you are ready to move on to phase 2.
+you are ready to move on to the next step (see README in the updating/ directory).
 
 However, if there are entries in cas_to_check.csv, follow these steps:
     1) run all the cas numbers in that file through a check at SciFinder.com
        in their 'Substance Identifier' (you can run up to 25 cas numbers
        at a time).  If a given search returns one or more results (that is, valid
        cas materials), select all of them, choose, export, and save the export
-       results as a 'quoted text' file.  Save that file and add it to 
+       results as a 'tagged text' file.  Save that file and add it to 
        the /sources/CAS_ref_files/folder within the CAS_ref project (a different
        folder altogether) with all the other SciFinder results. 
        
@@ -30,7 +30,7 @@ However, if there are entries in cas_to_check.csv, follow these steps:
        and properly identified.
 
     2) It sometimes happens that a cas number in FF is valid (at least in format)
-       but it does not reference an actual chemical.  We keep list of those
+       but it does not reference an actual chemical.  We keep a list of those
        in /sources/valid_but_empty.csv, so that we do not have to run them
        through SciFinder every time we update the bulk data set.  To find those
        and save them in that csv file, just run this code 
@@ -54,6 +54,6 @@ import core.Construct_set as const_set
 import updating.make_updated_xlate as mux
 
 
-tab_const = const_set.Construct_set(fromScratch=True).get_full_set()
+tab_const = const_set.Construct_set(fromScratch=True).get_full_set(make_files=False)
 
 mux.check_for_new_cas(tab_manager=tab_const)

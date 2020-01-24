@@ -13,9 +13,11 @@ directories.
     
 """
 processFromScratch = True
+make_output_files = True
 
 import core.Construct_set as const_set
 
 
-t = const_set.Construct_set(fromScratch=processFromScratch).get_full_set()
+t = const_set.Construct_set(fromScratch=processFromScratch,
+                            make_files=make_output_files).get_full_set()
 

@@ -24,8 +24,6 @@ import csv
 import pandas as pd
 import numpy as np
 
-#!!! Need to read in APINumber as string. and correct SKYTruth APINumber so that
-#it is 14 digits (merge with placeholders?)
 
 class Read_FF():
     
@@ -69,10 +67,11 @@ class Read_FF():
                     t['ingKeyPresent'] = np.where(t.IngredientKey.isna(),
                                                   False,True)
                     t['raw_filename'] = fn
+                    t['record_flags'] = 'B'  #bulk download flag (in allrec)
+                    t['data_source'] = 'bulk' # for event table
                     
                     dflist.append(t)
         final = pd.concat(dflist,sort=True)
-        #final[final.UploadKey=='30761a0d-b09d-4bac-bb38-129cad245872'].to_csv('./tmp/temp.csv')
         return final
         
     def import_skytruth(self):
@@ -103,9 +102,18 @@ class Read_FF():
                                 # Use pandas default_na values; dealt with in pre-processing
                                 keep_default_na=True)
                 t['raw_filename'] = 'SkyTruth'
-                t.APINumber = t.APINumber + 'XXXX'
+                t['record_flags'] = 'Y'  #skytruth flag
+                t['data_source'] = 'SkyTruth'
+                t.APINumber = np.where(t.APINumber.str.len()==13, #shortened state numbers
+                                       '0'+ t.APINumber,
+                                       t.APINumber)
+                t.APINumber = np.where(t.APINumber.str.len()==9, #shortened state numbers
+                                       '0'+ t.APINumber + 'XXXX',
+                                       t.APINumber)
+                t.APINumber = np.where(t.APINumber.str.len()==10,
+                                       t.APINumber + 'XXXX',
+                                       t.APINumber)
                 t['ingKeyPresent'] = True  # all SkyTruth events have chem records
-                #  create a basic integer index for easier reference
         return t
 
     def import_all(self):
@@ -116,5 +124,4 @@ class Read_FF():
         t['reckey'] = t.index.astype(int)
         t.drop(columns=self.dropList,inplace=True)
         assert(len(t)==len(t.reckey.unique()))
-        #print(f'len of df: {len(t)} ---- unique reckey: {len(t.reckey.unique())}')
         return t

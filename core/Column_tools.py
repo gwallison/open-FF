@@ -19,7 +19,7 @@ def add_bg_col(df,field='StateName',sources='./sources/'):
     ref = pd.read_csv(fn,keep_default_na=False,na_values='',quotechar='$',
                       usecols=['primary','original'])
     df['original'] = df[field].str.strip().str.lower()
-    #print (f' -- translate file: {fn}, with columns: {ref.columns}')
+
     ref = ref.rename(columns={'primary':'bg'+field})
     ref = ref[~ref.duplicated(subset='original',keep='last')]
     df = df.merge(ref,on='original',how='left',validate='m:1')

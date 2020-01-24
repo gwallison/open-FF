@@ -1,7 +1,12 @@
 *.zip
 *.pyc
-.ipynb_checkpoints/*.*
-out/*.*
-tmp/*.*
+updating/.ipynb_checkpoints/*.*
+website_gen/.ipynb_checkpoints/*.*
+out/
+tmp/
 spike*.*
 README_POC*.*
+website_gen/*.html
+website_gen/*.csv
+website_gen/*.txt
+*.pkl
