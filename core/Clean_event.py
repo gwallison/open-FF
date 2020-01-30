@@ -22,9 +22,10 @@ class Clean_event():
         ref = pd.read_csv(self.sources+'uploadKey_ref.csv')
 
         self.df = pd.merge(self.df,ref[['UploadKey','bgStateName','bgCountyName',
-                                        'bgLatitude','bgLongitude']],
+                                        'bgLatitude','bgLongitude',
+                                        'loc_flags']],
                            on='UploadKey',how='left',validate='1:1')
-
+        
         dates = pd.read_csv(self.sources+'upload_dates.csv')
 
         self.df = pd.merge(self.df,dates[['UploadKey','date_added']],

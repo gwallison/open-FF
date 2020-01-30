@@ -72,6 +72,17 @@ class Clean_allrec():
         df.record_flags = np.where(df.iUploadKey.isin(dupes),
                                      df.record_flags.str[:]+'-2',
                                      df.record_flags)
+        print('flagging events with problems detected in location data')        
+        t = self.tab_man.tables['event'].get_df(['UploadKey','iUploadKey',
+                                                 'loc_flags'])
+
+        df = pd.merge(df,t[['iUploadKey','loc_flags']],
+                           on='iUploadKey',how='left',validate='m:1')
+        df.record_flags = np.where(df.loc_flags.isna(),
+                                   df.record_flags,
+                                   df.record_flags.str[:]+df.loc_flags.str[:])
+        df = df.drop('loc_flags',axis=1)
+        
         self.tab_man.update_table_df(df,'allrec')
         
         

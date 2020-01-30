@@ -61,21 +61,34 @@ class Make_working_sets():
         #print(df.info())
         self.save_compressed(df,'df_filtered_flat')
 
-    def save_tables(self):
-        # save all the tables in the table manager to a zip file
-        print('   ** making "all_tables.zip" set **')
-        tdir = self.tmpdir+'tables/'
-        shutil.rmtree(tdir,ignore_errors=True)
-        os.mkdir(tdir)
         
-        with zipfile.ZipFile(self.outdir+'all_tables.zip','w') as z:
+    def save_tables(self):
+        """ save tables into the outdir.  If the outdir is the
+        local ./out, save them as a single zip file; if it is
+        ../result (CodeOcean operation), save directly into that
+        folder as distinct files. CodeOcean doesn't facilitate zipping
+        into a folder."""
+        # save all the tables in the table manager to a zip file
+        if self.outdir=='../results/':
+            print('   ** making set of table files **')
             for tab in self.tab_man.tables.keys():
                 df = self.tab_man.tables[tab].get_df()
-                fn = tdir+tab+'.csv'
+                fn = self.outdir+'table_'+tab+'.csv'
                 df.to_csv(fn,index=False)
-                z.write(fn,compress_type=zipfile.ZIP_DEFLATED)
-        shutil.rmtree(tdir,ignore_errors=True) #clean up
-        
+        else:    
+            print('   ** making "all_tables.zip" set **')
+            tdir = self.tmpdir+'tables/'
+            shutil.rmtree(tdir,ignore_errors=True)
+            os.mkdir(tdir)
+            
+            with zipfile.ZipFile(self.outdir+'all_tables.zip','w') as z:
+                for tab in self.tab_man.tables.keys():
+                    df = self.tab_man.tables[tab].get_df()
+                    fn = tdir+tab+'.csv'
+                    df.to_csv(fn,index=False)
+                    z.write(fn,compress_type=zipfile.ZIP_DEFLATED)
+            shutil.rmtree(tdir,ignore_errors=True) #clean up
+
     def make_all_sets(self):
         """This takes a while because of the size of the data set and that
         we are compressing into zip files"""

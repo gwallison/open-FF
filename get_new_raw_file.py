@@ -17,6 +17,8 @@ import pandas as pd
 import requests
 from datetime import datetime
 
+do_download = True
+
 today = datetime.today()
 if today.weekday() in [0]: # Monday= 0, Sunday = 6
     archive_file=True
@@ -27,19 +29,20 @@ else:
 sources = './sources/'
 archive = './archive/'
 datefn= './out/upload_dates.csv'
-skyfn = sources+'sky_truth_final.zip'
+skyfn = 'sky_truth_final'
 afile = archive+f'ff_archive_{today.strftime("%Y-%m-%d")}.zip'
-currfn = sources+'testData.zip'
+currfn = 'testData'
 outdir = './out/'
 tempfolder = './tmp/'
 
 # get and save files
-url = 'http://fracfocusdata.org/digitaldownload/fracfocuscsv.zip'
-print(f'Downloading data from {url}')
-r = requests.get(url, allow_redirects=True)
-print('Download completed')
-open(currfn, 'wb').write(r.content)  # overwrites last file.
-if archive_file: open(afile, 'wb').write(r.content)
+if do_download:
+    url = 'http://fracfocusdata.org/digitaldownload/fracfocuscsv.zip'
+    print(f'Downloading data from {url}')
+    r = requests.get(url, allow_redirects=True)
+    print('Download completed')
+    open(currfn, 'wb').write(r.content)  # overwrites last file.
+    if archive_file: open(afile, 'wb').write(r.content)
 
 ## Now process file
 print(f'Working on data set')

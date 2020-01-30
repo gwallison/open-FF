@@ -78,25 +78,29 @@ bgSupplier- our curatated version of the raw field 'Supplier.'  This is
   up the field to make it more searchable. While the raw field has over 80
   versions of the company name Halliburton, bgSupplier has only one.
 
-data_source
+data_source - indicates whether record was sourced from 'bulk' or 'skytruth'
 
 date - a cleaned version of JobEndDate.  This version has removed time stamps and 
   has corrected a few erroneous years
 
-eh_Class_L1 -
+eh_Class_L1 - From the Elsner/Hoelzer 2016 table. 
 
-eh_Class_L2 -
+eh_Class_L2 - From the Elsner/Hoelzer 2016 table. 
 
-eh_CAS -
+eh_CAS - From the Elsner/Hoelzer 2016 table. 
 
-eh_IngredientName - 
+eh_IngredientName - From the Elsner/Hoelzer 2016 table. 
 
-eh_subs_class -
+eh_subs_class - From the Elsner/Hoelzer 2016 table. 
 
-eh_function - 
+eh_function - From the Elsner/Hoelzer 2016 table. 
 
-raw_filename - the name of the input file in the bulk download in which the 
-  current record is found.
+is_in_TEDX - 
+
+is_in_TSCA - 
+
+raw_filename - the name of the input file in the bulk download or skytruth
+  archive in which the current record is found.
 
 reckey - a simple incrementing index of records across all raw input files.
 
@@ -127,7 +131,12 @@ record_flags - this field holds all generated codes about each record. It is in 
         record may also have valid mass information).
     B - Raw data source for this record is the FracFocus bulk download
     C - This record has been identified as a carrier or base fluid record. 
+    L - This code indicates a location datum (lat or lon) seems outside 
+        APINumber implied location. bgLatitude and/or bgLongitude have
+        beed adjusted
     M - This code indicates valid mass (in bgMass) for this chemical.
+    N - This code indicates a location name mistake (state or county names 
+        do not match state or county codes).
     P - Valid CAS. The CASNumber of this record exactly matches (after some cleanup)
         an authoritative CAS number.
     R - This record is redundant within the event and should be excluded in any

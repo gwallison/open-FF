@@ -24,14 +24,16 @@ make_files = True
 
 
 ####### zip input files
-zfilename = sources+'currentData.zip'
-stfilename = sources+'sky_truth_final.zip'
+zfilename = 'currentData'
+stfilename = 'sky_truth_final'
 
 ####### output
 raw_stats_fn = outdir+'ff_raw_stats.txt'
 
 #### ----------    end File Handles ----------  ####
 
+import shutil
+import os
 import core.Read_FF as rff
 import core.Table_manager as c_tab
 import core.Clean_event as clean_ev
@@ -52,9 +54,15 @@ class Construct_set():
         self.sources = sources
         self.tempfolder = tempfolder
         self.processFromScratch=fromScratch
-        self.zfilename = zfilename
-        self.stfilename = stfilename
+        self.zfilename = self.sources+zfilename+'.zip'
+        self.stfilename = self.sources+stfilename+'.zip'
         self.make_files=make_files
+        self.picklefolder = self.tempfolder+zfilename+'_pickles/'
+
+    def initialize_dir(self,dir):
+        shutil.rmtree(dir,ignore_errors=True)
+        os.mkdir(dir)
+                      
         
     def _banner(self,text):
         print()
@@ -64,8 +72,9 @@ class Construct_set():
         print('*'*50)
         
     def get_full_set(self):
-        tab_const = c_tab.Construct_tables(pkldir=self.tempfolder)
+        tab_const = c_tab.Construct_tables(pkldir=self.picklefolder)
         if self.processFromScratch:
+            self.initialize_dir(self.picklefolder)
             self._banner('PROCESS RAW DATA FROM SCRATCH')
             self._banner('Read_FF')
             raw_df = rff.Read_FF(zname=self.zfilename,
