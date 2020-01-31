@@ -41,7 +41,7 @@ if do_download:
     print(f'Downloading data from {url}')
     r = requests.get(url, allow_redirects=True)
     print('Download completed')
-    open(currfn, 'wb').write(r.content)  # overwrites last file.
+    open(sources+currfn+'.zip', 'wb').write(r.content)  # overwrites last file.
     if archive_file: open(afile, 'wb').write(r.content)
 
 ## Now process file
