@@ -120,12 +120,20 @@ class FF_stats():
         self._add_to_outfile(out)
         
     def calculate_all(self):
-        self._add_to_outfile('\n        ################   Boolean fields   ####################\n')
-        self._show_bool_col_stat()
-        self._add_to_outfile('\n\n        ################   Numeric fields  ####################\n')
-        self._show_numeric_col_stat()              
-        self._add_to_outfile('\n\n        ################   String fields  ####################\n')
-        self._show_string_col_stat()              
+        sets = ['bulk','SkyTruth']
+        for subset in sets:
+            self.df = self.raw_df[self.raw_df.data_source == subset]
+            print(f'      -- generating stats for "{subset}"')         
+            self._add_to_outfile('\n\n'+'*'*65+'\n')
+            self._add_to_outfile(f'              Stats for data source = "{subset}"\n')
+            self._add_to_outfile('*'*65+'\n\n')
+
+            self._add_to_outfile('\n        ################   Boolean fields   ####################\n')
+            self._show_bool_col_stat()
+            self._add_to_outfile('\n\n        ################   Numeric fields  ####################\n')
+            self._show_numeric_col_stat()              
+            self._add_to_outfile('\n\n        ################   String fields  ####################\n')
+            self._show_string_col_stat()              
         self._add_to_outfile("""\n\n *** Note that some of these raw fields are not
         kept in the working data set because we do not use them and they take up
         space.  If you think you may want to explore them, let us know. ***""")

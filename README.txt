@@ -1,15 +1,14 @@
 README for FF-POC repository and project
 
 This CodeOcean capsule is an extension of the Proof of 
-Concept version of code to transform the online chemical disclosure site 
+Concept version of code to transform data from the online chemical disclosure site 
 for hydraulic fracturing, FracFocus.org, into a usable database.  
 
-The code performs cleaning, filtering, and 
+The code performs cleaning, flagging, and 
 curating techniques to yield organized data sets and sample analyses 
 from a notoriously messy collection of chemical records.   
-The sample analyses are available in the results section as 
-downloadable versions of the final data.  
-For a majority of the records, the mass of the chemicals is calculated. 
+For a majority of the chemical records, the mass of the chemicals used 
+in fracking operations is calculated. 
 
 To be included in filtered data sets, 
    Fracking events must use water as carrier and percentages must be 
@@ -46,6 +45,11 @@ bgStateName and bgCountyName. When the Lat/Lon numbers in FF are too far from an
 county, we assume they are wrong and use the center of the county as the georeference.
 
 ******  open-FF  Version explanation ******
+
+Version 3: Data downloaded from FracFocus on Jan. 22, 2020. Modified the 
+   FF_stats module to generate separate reports for the "bulk download" and
+   the "SkyTruth" data sources.  Both are reported in "ff_raw_stats.txt" in the
+   results section.)
 
 Version 2: Data downloaded from FracFocus on Jan. 22, 2020. Incorporated 
    basic statistics on the raw FracFocus data (see "ff_raw_stats.txt" in the
