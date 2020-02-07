@@ -11,7 +11,7 @@ The sample analyses are available in the results section as
 downloadable versions of the final data.  
 For a majority of the records, the mass of the chemicals is calculated. 
 
-To be included in final data sets, 
+To be included in filtered data sets, 
    Fracking events must use water as carrier and percentages must be 
      consistent and within tolerance.
    Chemicals must be identified by a match with an authoritative CAS number 
@@ -46,6 +46,10 @@ bgStateName and bgCountyName. When the Lat/Lon numbers in FF are too far from an
 county, we assume they are wrong and use the center of the county as the georeference.
 
 ******  open-FF  Version explanation ******
+
+Version 2: Data downloaded from FracFocus on Jan. 22, 2020. Incorporated 
+   basic statistics on the raw FracFocus data (see "ff_raw_stats.txt" in the
+   results section.)
 
 Version 1: Data downloaded from FracFocus on Jan. 22, 2020.  SkyTruth archive
    has been incorporated.  Links to references include: Elsner & Hoelzer 2016, 

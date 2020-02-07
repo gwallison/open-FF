@@ -23,15 +23,19 @@ import re
 import csv
 import pandas as pd
 import numpy as np
+import core.FF_stats as ffstats
 
 
 class Read_FF():
     
     def __init__(self,zname='./sources/currentData.zip',
                  skytruth_name='./sources/sky_tryth_final.zip',
-                 tab_const=None):
+                 outdir = './out/',
+                 tab_const=None,gen_raw_stats=False):
         self.zname = zname
         self.stname = skytruth_name
+        self.outdir = outdir
+        self.gen_raw_stats = gen_raw_stats
         self.dropList = ['ClaimantCompany', 'DTMOD', 'DisclosureKey', 
                          'IngredientComment', 'IngredientMSDS',
                          'IsWater', 'Projection', 'PurposeIngredientMSDS',
@@ -122,6 +126,10 @@ class Read_FF():
                        sort=True)
         t.reset_index(drop=True,inplace=True) #  single integer as index
         t['reckey'] = t.index.astype(int)
+        if self.gen_raw_stats:
+            print('  --- calculating stats on raw data')
+            ffstats.FF_stats(t,outfn=self.outdir+'ff_raw_stats.txt').calculate_all()
+           
         t.drop(columns=self.dropList,inplace=True)
         assert(len(t)==len(t.reckey.unique()))
         return t

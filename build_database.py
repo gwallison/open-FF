@@ -13,7 +13,7 @@ directories.
     
 """
 bulk_fn = 'currentData'
-bulk_fn = 'ff_archive_2019-02-25'
+#bulk_fn = 'ff_archive_2019-02-25'
 #bulk_fn = 'testData'
 processFromScratch = True
 make_output_files = False

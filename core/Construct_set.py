@@ -27,8 +27,6 @@ make_files = True
 zfilename = 'currentData'
 stfilename = 'sky_truth_final'
 
-####### output
-raw_stats_fn = outdir+'ff_raw_stats.txt'
 
 #### ----------    end File Handles ----------  ####
 
@@ -78,7 +76,10 @@ class Construct_set():
             self._banner('PROCESS RAW DATA FROM SCRATCH')
             self._banner('Read_FF')
             raw_df = rff.Read_FF(zname=self.zfilename,
-                                 skytruth_name=self.stfilename).import_all()
+                                 skytruth_name=self.stfilename,
+                                 outdir = self.outdir,
+                                 gen_raw_stats=True).import_all()
+
             self._banner('Table_manager')
             raw_df = tab_const.add_indexes_to_full(raw_df)
             tab_const.build_tables(raw_df)
@@ -130,7 +131,8 @@ class Construct_set():
         tab_const = c_tab.Construct_tables()
         if self.processFromScratch:
             raw_df = rff.Read_FF(zname=self.zfilename,
-                                 skytruth_name=self.stfilename).import_all()
+                                 skytruth_name=self.stfilename,
+                                 gen_raw_stats=False).import_all()
             raw_df = tab_const.add_indexes_to_full(raw_df)
             tab_const.build_tables(raw_df)
             raw_df = None
