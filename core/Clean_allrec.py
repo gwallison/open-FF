@@ -65,7 +65,7 @@ class Clean_allrec():
                                                  'date','APINumber'])
         t = pd.merge(t,df[['iUploadKey','reckey']][~df.record_flags.str.contains('1')],
                      on='iUploadKey',how='right',validate='1:m')
-        t = t.groupby(['UploadKey','date','APINumber'],as_index=False)['reckey','iUploadKey'].first()
+        t = t.groupby(['UploadKey','date','APINumber'],as_index=False)[['reckey','iUploadKey']].first()
         t['dupes'] = t.duplicated(subset=['APINumber','date'],keep=False)
         dupes = list(t[t.dupes].iUploadKey.unique())
         print(f'  -- flagging {len(dupes)} disclosures')

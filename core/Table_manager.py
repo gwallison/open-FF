@@ -85,7 +85,8 @@ class Construct_tables():
         for tn in self.tables:
             self.tables[tn].unPickleComponents()
 
-    def listTables(self,show_all=False):
+    def listTables(self,show_all=False,silent=True):
+        if silent: return
         for table in self.tables:
             print(f'Table "{table}" keyed with {self.tables[table].keyf} has {self.tables[table].num_entries()} records')
             if show_all: self.tables[table].show_diag()

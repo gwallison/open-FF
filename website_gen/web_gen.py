@@ -42,7 +42,7 @@ class Web_gen():
                                 'data_source', 'bgStateName', 'bgCountyName', 
                                 'bgLatitude', 'bgLongitude', 'date',
                                 'IngredientName', 'Supplier', 'bgSupplier', 
-                                'Purpose', 'CASNumber', 'bgCAS',
+                                'Purpose', 'CASNumber', 'bgCAS','infServiceCo',
                                 'bgIngredientName', 'proprietary', 
                                 'eh_Class_L1', 'eh_Class_L2', 'eh_CAS', 
                                 'eh_IngredientName', 'eh_subs_class', 
@@ -142,23 +142,6 @@ class Web_gen():
             an_fn = f'/analysis_{chem}.html'
             #print(an_fn)
             shutil.copyfile(self.jupyter_fn,self.outdir+chem+an_fn)
-# =============================================================================
-#             # add text to index body
-#             linelst = [f'<a href= {chem}/analysis_{chem}.html> analysis </a>',
-#                        f'<a href= {chem}/data.csv> filtered data </a>',
-#                        f'<div class="cas"><a href={chem+"/"+chem+".html"}>{chem} </a></div>',
-#                        f'{ingred}',
-#                        f'{numrecs}',
-#                        f'{row.is_on_TEDX}',
-#                        f'{row.eh_Class_L1}',
-#                        f'{row.eh_subs_class}']
-#             s += self.add_table_line(linelst)
-#         s+= '</table>\n'    
-#         pg = self.compile_page(title='open_FF: Chemical Catalog',body=s,
-#                                header='Chemical Catalog - sorted by CAS number')
-#         self.save_page(webtxt=pg,fn='index.html')
-# 
-# =============================================================================
 
     def make_10perc_dict(self,fromScratch=True):
         if fromScratch:
@@ -214,12 +197,6 @@ class Web_gen():
             title = 'open_FF Catalog: sorted by Elsner/Hoelzer class'
             gb.sort_values(['cnt'],ascending=False,inplace=True)
             gb.sort_values(['eh_Class_L1','eh_Class_L2'],inplace=True)
-# =============================================================================
-#         if cattype == 'sort_by_eh_subclass':
-#             fn = 'by_eh_subclass.html'
-#             title = 'open_FF Catalog: sorted by Elsner/Hoelzer subclass'
-#             gb.sort_values(['eh_subs_class','bgCAS'],inplace=True)
-# =============================================================================
         if cattype == 'sort_by_num_records':
             fn = 'by_num_records.html'
             title = 'open_FF Catalog: sorted by number of records'
@@ -249,22 +226,6 @@ class Web_gen():
                 continue
 
             
-# =============================================================================
-#             # first make a file for the chem
-#             cbody = f'<h1> {chem} </h1> \n '
-#             cbody += f'<a href= analysis_{chem}.html> jupyter analysis </a><br>\n  '
-#             cbody += f'<a href= data.csv> filtered data </a><br>\n  '
-#             cbody += '<a href=../index.html> index </a>'            
-#             pg = self.compile_page(title='open_FF catalog: '+chem,
-#                                    header=chem+'<br>'+ingred,
-#                                    body=cbody)
-#             self.save_page(webtxt=pg,fn=chem+'/'+chem+'.html')
-#             
-#             self.make_jupyter_output()
-#             an_fn = f'/analysis_{chem}.html'
-#             #print(an_fn)
-#             shutil.copyfile(self.jupyter_fn,self.outdir+chem+an_fn)
-# =============================================================================
             # add text to index body
             try:
                 per90 = round_sig(self.perc90dic[chem],1)
@@ -298,6 +259,12 @@ class Web_gen():
         self.make_catalog('sort_by_eh_class')
         self.make_catalog('sort_by_num_records')
         
+    def make_robot_file(self):
+        """create robots.txt file"""
+        s = "User-agent: * \n"
+        s+= "Disallow: / \n"
+        self.save_page(webtxt=s,fn='robots.txt')
+
     def make_front_page(self):
         # start table
         s = "<table>"
@@ -311,6 +278,7 @@ class Web_gen():
         pg = self.compile_page(title='open_FF Catalog',body=s,
                                header='open_FF Catalog home page')
         self.save_page(webtxt=pg,fn='index.html')
+        self.make_robot_file()
 
     def make_jupyter_output(self,subfn=''):
         s= 'jupyter nbconvert --template=nbextensions --ExecutePreprocessor.allow_errors=True --ExecutePreprocessor.timeout=-1 --execute website_gen/chemical_report.ipynb --to=html '

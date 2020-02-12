@@ -38,6 +38,7 @@ import core.Clean_event as clean_ev
 import core.Clean_allrec as clean_ar
 import core.Categorize_records as cat_rec
 import core.Process_mass as proc_mass
+import core.Generate_composite_fields as gen_fields
 import core.Add_external_datasets as aed
 import core.Make_working_sets as mws
 
@@ -94,6 +95,9 @@ class Construct_set():
             clean_ar.Clean_allrec(tab_manager=tab_const,
                                   sources=self.sources).process_records()
 
+            self._banner('Generate_composite_fields')
+            gen_fields.Gen_composite_fields(tab_manager=tab_const).make_infServiceCo()
+
             self._banner('Categorize_CAS')
             cat_rec.Categorize_CAS(tab_manager=tab_const,
                                    sources=self.sources,
@@ -128,7 +132,7 @@ class Construct_set():
         """ generates a set of mostly of raw values - used mostly
         in pre-process screening. """
         
-        tab_const = c_tab.Construct_tables()
+        tab_const = c_tab.Construct_tables(pkldir=self.picklefolder)
         if self.processFromScratch:
             raw_df = rff.Read_FF(zname=self.zfilename,
                                  skytruth_name=self.stfilename,
