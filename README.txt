@@ -6,9 +6,17 @@ for hydraulic fracturing, FracFocus.org, into a usable database.
 
 The code performs cleaning, flagging, and 
 curating techniques to yield organized data sets and sample analyses 
-from a notoriously messy collection of chemical records.   
+from a difficult collection of chemical records.   
 For a majority of the chemical records, the mass of the chemicals used 
 in fracking operations is calculated. 
+
+The output of this project includes full data sets and filtered data sets. All 
+sets include many of the original raw FracFocus fields and many generated
+fields that correct and add context to the raw data.  The full sets do not 
+filter out any of the original raw FracFocus records but leaves that up to 
+the user (by using the record_flags field, etc.)  Filtered data sets remove
+the FracFocus records that have significant problems to give the user a 
+product that is usable without much work.
 
 To be included in filtered data sets, 
    Fracking events must use water as carrier and percentages must be 
@@ -25,12 +33,12 @@ Further, portions of the raw bulk data that are filtered out include:
 
 Finally,  I clean up some of the labeling fields by consolidating multiple 
 versions of a single category into an easily searchable name. For instance, 
-I collapse the 80+ versions of the supplier 'Halliburton' to a single name.
+I collapse the 80+ versions of the supplier name 'Halliburton' to a single
+value 'halliburton'.
 
 By removing or cleaning the difficult data from this unique data source, 
-I produce a data set that should facilitate more in-depth 
+I hope I have produced a data set that should facilitate more in-depth 
 analyses of chemical use in the fracking industry.
-
 
 Location assumptions: Several FF fields help identify the location of a fracking site:
 StateName, CountyName, Latitude, Longitude, StateNumber, CountyNumber
@@ -45,6 +53,10 @@ bgStateName and bgCountyName. When the Lat/Lon numbers in FF are too far from an
 county, we assume they are wrong and use the center of the county as the georeference.
 
 ******  open-FF  Version explanation ******
+
+Version 4: Data downloaded from FracFocus on Feb 2, 2020.  Added the generated
+   field, infServiceCo. This field is an attempt to identify the primary
+   service company of a fracking event.
 
 Version 3: Data downloaded from FracFocus on Jan. 22, 2020. Modified the 
    FF_stats module to generate separate reports for the "bulk download" and

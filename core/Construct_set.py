@@ -123,7 +123,7 @@ class Construct_set():
                 mws.Make_working_sets(tab_const,outdir=self.outdir,
                                       tmpdir=self.tempfolder).make_all_sets()
         else: 
-            print('loading from pickles...')
+            #print('loading from pickles...')
             tab_const.loadAllPickles()
             tab_const.listTables()
         return tab_const
@@ -141,7 +141,7 @@ class Construct_set():
             tab_const.build_tables(raw_df)
             raw_df = None
         else: 
-            print('loading from pickles...')
+            #print('loading from pickles...')
             tab_const.loadAllPickles()
             tab_const.listTables()
         return tab_const

@@ -95,9 +95,15 @@ eh_subs_class - From the Elsner/Hoelzer 2016 table.
 
 eh_function - From the Elsner/Hoelzer 2016 table. 
 
-is_in_TEDX - 
+infServiceCo - generated field that is an attempt to identify the primary service 
+  company involved in the give fracking event.  The field is simply the most
+  frequent bgSupplier in a disclosure (ignoring all non-company values such as
+  'n/a', 'Listed Above', etc.)  This field is an attempt to overcome the disconnect
+  between the chemical records and the descriptor fields in the System Approach.
 
-is_in_TSCA - 
+is_in_TEDX - simple boolean whether this record's bgCAS is in the TEDX list
+
+is_in_TSCA - simple boolean whether this record's bgCAS is in the TSCA list
 
 raw_filename - the name of the input file in the bulk download or skytruth
   archive in which the current record is found.

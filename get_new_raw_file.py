@@ -19,7 +19,9 @@ import subprocess
 import shutil
 from datetime import datetime
 
+
 do_download = True
+
 
 today = datetime.today()
 if today.weekday() in [0]: # Monday= 0, Sunday = 6
@@ -36,19 +38,6 @@ afile = archive+f'ff_archive_{today.strftime("%Y-%m-%d")}.zip'
 currfn = 'testData'
 outdir = './out/'
 tempfolder = './tmp/'
-#webworkfolder = './website_gen/'
-
-# =============================================================================
-# # for nicer displays of numbers: round to significant figures.
-# from math import log10, floor
-# def round_sig(x, sig=2):
-#     if abs(x)>=1:
-#         out =  int(round(x, sig-int(floor(log10(abs(x))))-1))
-#         return f"{out:,d}" # does the right thing with commas
-#     else: # fractional numbers
-#         return str(round(x, sig-int(floor(log10(abs(x))))-1))
-#         
-# =============================================================================
 
 # get and save files
 if do_download:
@@ -74,7 +63,7 @@ df = df[~df.UploadKey.isin(uklst)] # just the new ones
 gb = df.groupby('UploadKey',as_index=False)['iUploadKey'].count()
 gb['date_added'] = today.strftime("%Y-%m-%d")
 gb.rename({'iUploadKey':'num_records'}, inplace=True,axis=1)
-print(f'New events: {len(gb)}')
+print(f'Number of added events: {len(gb)}\n\n')
 
 outdf = pd.concat([outdf,gb],sort=True)
 outdf.to_csv(datefn,index=False)
@@ -85,29 +74,4 @@ print(subprocess.run(s))
 shutil.copyfile('daily_report.html',
                 'c:/Users/Gary/Google Drive/webshare/daily_report.html')
 
-# =============================================================================
-# print(df.columns)
-# # show where today's fracks are
-# if (len(gb)!=0): 
-#     locat = t.get_df_location()[['UploadKey','StateName','CountyName',
-#                                  'iOperatorName']]
-#     opdf = t.tables['operator'].get_df()
-#     locat = pd.merge(locat,opdf,on='iOperatorName',how='left')
-#     df = pd.merge(df,locat,on='UploadKey',how='left')
-#     gb = df.groupby(['UploadKey','StateName'],as_index=False)[['CountyName',
-#                                                                'OperatorName',
-#                                                       'TotalBaseWaterVolume']].first()
-#     tmp1 = gb.groupby(['StateName','CountyName','OperatorName'],as_index=False)['UploadKey'].count()
-#     tmp1.rename({'UploadKey':'Disclosure_cnt'},inplace=True,axis=1)
-#     tmp2 = gb.groupby(['StateName','CountyName','OperatorName'],
-#               as_index=False)['TotalBaseWaterVolume'].mean()
-#     tmp2.rename({'TotalBaseWaterVolume':'mean_Water_Used'},axis=1,inplace=True)
-#     tmp2.mean_Water_Used = tmp2.mean_Water_Used.map(lambda x: round_sig(x,3))
-#     out = pd.merge(tmp1,tmp2,on=['StateName','CountyName','OperatorName'],how='left')
-#     print(out)
-#     out.to_csv(webworkfolder+'daily_data.csv',index=False)
-#     #out.to_csv('c:/Users/Gary/Google Drive/webshare/summary_of_today.csv',
-#     #   index=False)
-# 
-# =============================================================================
 
