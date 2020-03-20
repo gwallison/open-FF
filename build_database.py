@@ -14,9 +14,9 @@ directories.
 """
 bulk_fn = 'currentData'
 #bulk_fn = 'ff_archive_2019-02-25'
-bulk_fn = 'testData'
+#bulk_fn = 'testData'
 processFromScratch = True
-make_output_files = False
+make_output_files = True
 
 
 import core.Construct_set as const_set

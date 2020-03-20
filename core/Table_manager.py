@@ -27,6 +27,7 @@ class Construct_tables():
                                                 'StateName','StateNumber',
                                                 'CountyName','CountyNumber',
                                                 'Latitude','Longitude',
+                                                'Projection',
                                                 'WellName','FederalWell',
                                                 'IndianWell','data_source',
                                                 'iUploadKey'])

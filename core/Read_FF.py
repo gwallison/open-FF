@@ -38,7 +38,7 @@ class Read_FF():
         self.gen_raw_stats = gen_raw_stats
         self.dropList = ['ClaimantCompany', 'DTMOD', 'DisclosureKey', 
                          'IngredientComment', 'IngredientMSDS',
-                         'IsWater', 'Projection', 'PurposeIngredientMSDS',
+                         'IsWater', 'PurposeIngredientMSDS',
                          'PurposeKey', 'PurposePercentHFJob', 'Source', 
                          'SystemApproach'] # not used, speeds up processing
         
