@@ -6,7 +6,7 @@ Created on Mon Feb 10 16:52:03 2020
 """
 
 import pandas as pd
-import numpy as np
+#import numpy as np
 
 class Gen_composite_fields():
     def __init__(self,tab_manager = None):  

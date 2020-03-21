@@ -47,7 +47,8 @@ class Construct_set():
     def __init__(self, fromScratch=False,zfilename=zfilename,
                  stfilename=stfilename,tempfolder=tempfolder,
                  sources=sources,outdir=outdir,
-                 make_files=make_files):
+                 make_files=make_files,
+                 abbreviated=False):
 
         self.outdir = outdir
         self.sources = sources
@@ -57,7 +58,8 @@ class Construct_set():
         self.stfilename = self.sources+stfilename+'.zip'
         self.make_files=make_files
         self.picklefolder = self.tempfolder+zfilename+'_pickles/'
-
+        self.abbreviated = abbreviated # used to do partial constructions
+        
     def initialize_dir(self,dir):
         shutil.rmtree(dir,ignore_errors=True)
         os.mkdir(dir)
@@ -76,10 +78,14 @@ class Construct_set():
             self.initialize_dir(self.picklefolder)
             self._banner('PROCESS RAW DATA FROM SCRATCH')
             self._banner('Read_FF')
+            if self.abbreviated:
+                gen_raw_stats = False
+            else:
+                gen_raw_stats = True
             raw_df = rff.Read_FF(zname=self.zfilename,
                                  skytruth_name=self.stfilename,
                                  outdir = self.outdir,
-                                 gen_raw_stats=True).import_all()
+                                 gen_raw_stats=gen_raw_stats).import_all()
 
             self._banner('Table_manager')
             raw_df = tab_const.add_indexes_to_full(raw_df)
@@ -95,22 +101,24 @@ class Construct_set():
             clean_ar.Clean_allrec(tab_manager=tab_const,
                                   sources=self.sources).process_records()
 
-            self._banner('Generate_composite_fields')
-            gen_fields.Gen_composite_fields(tab_manager=tab_const).make_infServiceCo()
+            if not self.abbreviated:
+                self._banner('Generate_composite_fields')
+                gen_fields.Gen_composite_fields(tab_manager=tab_const).make_infServiceCo()
 
             self._banner('Categorize_CAS')
             cat_rec.Categorize_CAS(tab_manager=tab_const,
                                    sources=self.sources,
                                    outdir=self.outdir).do_all()
 
-            self._banner('Process_mass')
-            proc_mass.Process_mass(tab_const).run()
-
-        
-            self._banner('Add_External_datasets')
-            aed.add_Elsner_table(tab_const,sources=self.sources,outdir=self.outdir)
-            aed.add_TEDX_ref(tab_const,sources=self.sources,outdir=self.outdir)
-            aed.add_TSCA_ref(tab_const,sources=self.sources,outdir=self.outdir)
+            if not self.abbreviated:
+                self._banner('Process_mass')
+                proc_mass.Process_mass(tab_const).run()
+    
+            
+                self._banner('Add_External_datasets')
+                aed.add_Elsner_table(tab_const,sources=self.sources,outdir=self.outdir)
+                aed.add_TEDX_ref(tab_const,sources=self.sources,outdir=self.outdir)
+                aed.add_TSCA_ref(tab_const,sources=self.sources,outdir=self.outdir)
 
 
             self._banner('pickle all tables')

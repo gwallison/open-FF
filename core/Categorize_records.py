@@ -206,8 +206,8 @@ class Categorize_CAS():
         self.phaseIII()
         # saves new flags
         self.tab_man.tables['allrec'].replace_df(self.df)
-        gb = self.df.groupby('iCASNumber',as_index=False)['bgCAS',
+        gb = self.df.groupby('iCASNumber',as_index=False)[['bgCAS',
                                                         'bgIngredientName',
-                                                        'proprietary'].first()
+                                                        'proprietary']].first()
         self.tab_man.tables['cas'].merge_df(gb)
         return self.df

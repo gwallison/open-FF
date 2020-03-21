@@ -19,8 +19,9 @@ import subprocess
 import shutil
 from datetime import datetime
 
+force_archive = False # use sparingly, only when not doing routine checks.
+do_download = True # if False, will run routines without downloading first.
 
-do_download = True
 
 
 today = datetime.today()
@@ -28,6 +29,8 @@ if today.weekday() in [0]: # Monday= 0, Sunday = 6
     archive_file=True
 else:
     archive_file=False
+if force_archive:
+    archive_file=True
 
 # define    
 sources = './sources/'

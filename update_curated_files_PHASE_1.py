@@ -55,6 +55,7 @@ import updating.make_updated_xlate as mux
 
 
 tab_const = const_set.Construct_set(fromScratch=True,
-                                    make_files=False).get_full_set()
+                                    make_files=False,
+                                    abbreviated=True).get_full_set()
 
 mux.check_for_new_cas(tab_manager=tab_const)
