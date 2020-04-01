@@ -46,8 +46,10 @@ tempfolder = './tmp/'
 if do_download:
     url = 'http://fracfocusdata.org/digitaldownload/fracfocuscsv.zip'
     print(f'Downloading data from {url}')
-    r = requests.get(url, allow_redirects=True)
-    print('Download completed')
+    st = datetime.now()
+    r = requests.get(url, allow_redirects=True,timeout=5.0)
+    endit = datetime.now()
+    #print(f'Download completed in {endit-st}')
     open(sources+currfn+'.zip', 'wb').write(r.content)  # overwrites last file.
     if archive_file: open(afile, 'wb').write(r.content)
 
@@ -76,5 +78,6 @@ s= 'jupyter nbconvert --template=nbextensions --ExecutePreprocessor.allow_errors
 print(subprocess.run(s))
 shutil.copyfile('daily_report.html',
                 'c:/Users/Gary/Google Drive/webshare/daily_report.html')
-
+if do_download:
+    print(f'Download completed in {endit-st}')
 
