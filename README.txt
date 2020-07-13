@@ -54,6 +54,8 @@ county, we assume they are wrong and use the center of the county as the georefe
 
 ******  open-FF  Version explanation ******
 
+Version 5: Data downloaded from FracFocus on May 14, 2020.  No other changes.
+
 Version 4: Data downloaded from FracFocus on March 20, 2020.  Added the generated
    field, infServiceCo. This field is an attempt to identify the primary
    service company of a fracking event.  Including in the output files the 

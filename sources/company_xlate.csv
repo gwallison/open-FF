@@ -125,6 +125,7 @@ $95 mcallen central and 5 mcallen city water$,$ambiguous$,$curated$
 $a & c$,$a & c$,$curated$
 $a schulman inc$,$a schulman$,$curated$
 $a schulman inc.$,$a schulman$,$curated$
+$a shulman$,$a schulman$,$curated$
 $a. schulman$,$a schulman$,$curated$
 $a. schulman inc.$,$a schulman$,$curated$
 $a. schulman, inc$,$a schulman$,$curated$
@@ -395,6 +396,7 @@ $aqua tex$,$aqua tex$,$curated$
 $aqualon$,$aqualon$,$curated$
 $aquaness chemical$,$aquaness chemical$,$curated$
 $aquaone source$,$one aquasource$,$curated$
+$aquarius chemical$,$aquarius chemical$,$curated$
 $aquaserv$,$aquaserv$,$curated$
 $aquaserv inc$,$aquaserv$,$curated$
 $aquaserv, inc$,$aquaserv$,$curated$
@@ -655,6 +657,7 @@ $bays$,$bays exploration$,$curated$
 $bays exploration$,$bays exploration$,$curated$
 $bays exploration, inc.$,$bays exploration$,$curated$
 $bays exploration, inc.$,$bays exploration$,$curated$
+$bayswater$,$bayswater$,$curated$
 $bayswater exploration & production, llc$,$bayswater$,$curated$
 $bayswater exploration &amp; production, llc$,$bayswater$,$curated$
 $bayswater exploration and production$,$bayswater$,$curated$
@@ -741,6 +744,7 @@ $bioguard$,$bioguard$,$curated$
 $biosuite$,$biosuite$,$curated$
 $biosuite gq2510$,$biosuite$,$curated$
 $biosuite group$,$biosuite$,$curated$
+$biosuite llc$,$biosuite$,$curated$
 $biosuite, llc$,$biosuite$,$curated$
 $biosuite, llc      multiple suppliers$,$biosuite$,$curated$
 $biotech, inc$,$biotech$,$curated$
@@ -795,7 +799,7 @@ $blackhawk drilling products, inc.$,$blackhawk drilling products$,$curated$
 $blackmountain$,$black mountain$,$curated$
 $blackridge resource partners$,$blackridge resource partners$,$curated$
 $blackridge resource partners$,$blackridge resource partners$,$curated$
-$blackstar energy services$,$blackstar energy services$,$curated$
+$blackstar energy services$,$blackstar$,$curated$
 $blackstone seminole llc$,$blackstone seminole$,$curated$
 $blackwell exp & development, llc$,$blackwell exp & development$,$curated$
 $blake production$,$blake production$,$curated$
@@ -1091,6 +1095,7 @@ $calfrac & range resources$,$calfrac$,$curated$
 $calfrac well$,$calfrac$,$curated$
 $calfrac well services$,$calfrac$,$curated$
 $calfrac well services corp.$,$calfrac$,$curated$
+$calfrac well services ltd.$,$calfrac$,$curated$
 $california drilling fluids$,$california drilling fluids$,$curated$
 $california resources corporation$,$california resources corporation$,$curated$
 $callon$,$callon$,$curated$
@@ -1287,6 +1292,7 @@ $chemeor$,$chemours$,$curated$
 $chemetrec$,$chemetrec$,$curated$
 $chemical$,$ambiguous$,$curated$
 $chemical service$,$ambiguous$,$curated$
+$chemical solvents$,$chemical solvents$,$curated$
 $chemical solvents, inc.$,$chemical solvents$,$curated$
 $chemical stewardship$,$chemical stewardship$,$curated$
 $chemical, inc$,$ambiguous$,$curated$
@@ -1816,6 +1822,7 @@ $danlin ind.$,$danlin$,$curated$
 $danlin industrie$,$danlin$,$curated$
 $danlin industries$,$danlin$,$curated$
 $danmark energy lp$,$danmark energy$,$curated$
+$dash operating, llc$,$dash operating$,$curated$
 $dave holke consulting, inc.$,$dave holke consulting$,$curated$
 $davidson energy corp$,$davidson$,$curated$
 $davidson energy, inc.$,$davidson$,$curated$
@@ -1908,6 +1915,7 @@ $diverterplus$,$diverter plus$,$curated$
 $diverterplus 1375$,$diverter plus$,$curated$
 $diverterplus llc$,$diverter plus$,$curated$
 $diverterplus, llc$,$diverter plus$,$curated$
+$diverters plus$,$diverter plus$,$curated$
 $divertplus, llc$,$diverter plus$,$curated$
 $dj oil$,$dj oil$,$curated$
 $djr operating, llc$,$djr operating$,$curated$
@@ -2370,6 +2378,8 @@ $firebird energy$,$firebird energy$,$curated$
 $firewheel energy$,$firewheel$,$curated$
 $firewheel energy, llc$,$firewheel$,$curated$
 $firewheel operating, llc$,$firewheel$,$curated$
+$first ascent operating, llc$,$first ascent$,$curated$
+$firstrike energy corporation$,$firstrike energy$,$curated$
 $five states energy$,$five states energy$,$curated$
 $fivestones$,$fivestones$,$curated$
 $fivestones energy llc$,$fivestones$,$curated$
@@ -2606,6 +2616,7 @@ $glen d. gonzenbach, llc$,$glen d. gonzenbach$,$curated$
 $glen d. gonzenbach, llc$,$glen d. gonzenbach$,$curated$
 $glen d. gonzenbach, llc$,$glen d. gonzenbach$,$curated$
 $glimp oil company, llc$,$glimp oil company$,$curated$
+$glm energy, inc.$,$glm energy$,$curated$
 $global chemical resources$,$global chemical resources$,$curated$
 $globe energy services$,$globe energy services$,$curated$
 $glutaraldehy de$,$not a company$,$curated$
@@ -2637,7 +2648,7 @@ $gp$,$gp$,$curated$
 $gradiant energy serivices$,$gradiant energy services$,$curated$
 $gradiant energy services$,$gradiant energy services$,$curated$
 $gradient energy services$,$gradiant energy services$,$curated$
-$grand mesa operating company$,$grand mesa operating company$,$curated$
+$grand mesa operating company$,$grand mesa operating$,$curated$
 $grand operating, inc.$,$grand operating$,$curated$
 $grant canyon oil and gas$,$grant canyon oil and gas$,$curated$
 $great bear petroleum operating llc$,$great bear petroleum$,$curated$
@@ -2728,6 +2739,7 @@ $halcon resouces$,$halcon$,$curated$
 $halcon resources$,$halcon$,$curated$
 $halcon resources corporation$,$halcon$,$curated$
 $haliburton$,$halliburton$,$curated$
+$haliburton energy services$,$halliburton$,$curated$
 $haliiburton$,$halliburton$,$curated$
 $halilburton$,$halliburton$,$curated$
 $hall$,$hall-ross$,$curated$
@@ -2751,6 +2763,7 @@ $halliburt on energy$,$halliburton$,$curated$
 $halliburt on energy services$,$halliburton$,$curated$
 $halliburt on halliburt on$,$halliburton$,$curated$
 $halliburtgon$,$halliburton$,$curated$
+$halliburtin$,$halliburton$,$curated$
 $halliburtion$,$halliburton$,$curated$
 $halliburtion energy services$,$halliburton$,$curated$
 $halliburtn$,$halliburton$,$curated$
@@ -3102,6 +3115,7 @@ $integrity biochem$,$integrity$,$curated$
 $integrity biochemical$,$integrity$,$curated$
 $integrity delaware llc$,$integrity$,$curated$
 $integrity delaware, llc$,$integrity$,$curated$
+$integrity industries$,$integrity$,$curated$
 $integrity industries, inc.$,$integrity$,$curated$
 $intergrated microbial delivery, inc.$,$integrated microbial delivery$,$curated$
 $internati$,$ambiguous$,$curated$
@@ -3196,6 +3210,8 @@ $jb production llc$,$jb production$,$curated$
 $jcam$,$jcam$,$curated$
 $jcam manufacturing llc$,$jcam$,$curated$
 $jdl operating, llc$,$jdl operating$,$curated$
+$jec operating$,$jec operating$,$curated$
+$jec operating, llc$,$jec operating$,$curated$
 $jerry hess operating co- muenster$,$jerry hess operating company$,$curated$
 $jerry hess operating co-muenster$,$jerry hess operating company$,$curated$
 $jerry hess operating company$,$jerry hess operating company$,$curated$
@@ -3314,6 +3330,7 @@ $kingsfield inc$,$kingsfield$,$curated$
 $kingsfield inc.$,$kingsfield$,$curated$
 $kirkpatrick oil$,$kirkpatrick oil$,$curated$
 $kirkpatrick oil company$,$kirkpatrick oil$,$curated$
+$kirkpatrick oil company, inc$,$kirkpatrick oil$,$curated$
 $kj energy, llc$,$kj energy$,$curated$
 $klear energy services$,$klear energy services$,$curated$
 $kleen oil field services$,$kleen oil field services$,$curated$
@@ -3327,6 +3344,7 @@ $kodiak oil &amp; gas corp$,$kodiak oil & gas corp$,$curated$
 $kovar operating, llc$,$kovar operating$,$curated$
 $kraken oil$,$kraken$,$curated$
 $kraken operating llc$,$kraken$,$curated$
+$krc operating, llc$,$krc operating$,$curated$
 $kroff$,$kroff$,$curated$
 $kroff chemical$,$kroff$,$curated$
 $kroff chemical co$,$kroff$,$curated$
@@ -3468,6 +3486,7 @@ $luca resources group, llc$,$luca$,$curated$
 $luxe operating, llc$,$luxe operating$,$curated$
 $lwc$,$lwc$,$curated$
 $lynn$,$lynn$,$curated$
+$lynx oklahoma operating llc$,$lynx oklahoma operating$,$curated$
 $m$,$ambiguous$,$curated$
 $m group$,$m group$,$curated$
 $m group llc$,$m group$,$curated$
@@ -3924,14 +3943,19 @@ $newfield exploration$,$newfield$,$curated$
 $newfield exploration$,$newfield$,$curated$
 $newfield exploration company$,$newfield$,$curated$
 $newfield exploration midcon$,$newfield$,$curated$
+$newkumet exploration$,$newkumet exploration$,$curated$
+$newkumet exploration, inc.$,$newkumet exploration$,$curated$
 $newpark$,$new park$,$curated$
 $newpark drilling fluids$,$new park$,$curated$
 $newpark drilling fluids, llc$,$new park$,$curated$
 $nexeo$,$nexeo$,$curated$
 $nexeo (geokimika)$,$nexeo$,$curated$
 $nexeo solutions$,$nexeo$,$curated$
+$nexgen$,$nexgen$,$curated$
+$nextier$,$nextier$,$curated$
 $nextier completion solutions$,$nextier$,$curated$
 $nextier ofs$,$nextier$,$curated$
+$nextier oilfield solutions$,$nextier$,$curated$
 $nfr$,$nfr$,$curated$
 $nfr energy$,$nfr$,$curated$
 $nfr energy llc$,$nfr$,$curated$
@@ -4095,14 +4119,15 @@ $one aquasurce inc.$,$one aquasource$,$curated$
 $one cor$,$wst$,$curated$
 $oneaqua$,$one aquasource$,$curated$
 $oneaqua source$,$one aquasource$,$curated$
-$onecor$,$wst$,$curated$
-$onecor services llc$,$wst$,$curated$
+$onecor$,$onecor$,$curated$
+$onecor services llc$,$onecor$,$curated$
 $oneenergy partners operating, llc$,$oneenergy partners operating$,$curated$
 $onesourc$,$onesource$,$curated$
 $onesourc e$,$onesource$,$curated$
 $onestim$,$onestim$,$curated$
 $onsite groundwater well - encana$,$ambiguous$,$curated$
 $opal resources operating company$,$opal resources operating company$,$curated$
+$opeator$,$ambiguous$,$curated$
 $operating co.$,$ambiguous$,$curated$
 $operating company$,$ambiguous$,$curated$
 $operating llc$,$ambiguous$,$curated$
@@ -4134,6 +4159,7 @@ $osage exploration and develpoment, inc.$,$osage exploration and development$,$c
 $osborn heirs company$,$osborn heirs company$,$curated$
 $osp$,$osp$,$curated$
 $osp microcheck inc.$,$osp$,$curated$
+$ospmicrocheck$,$osp$,$curated$
 $other chemicals$,$not a company$,$curated$
 $ottawa 20-40-12-20$,$ambiguous$,$curated$
 $overland resources llc$,$overland resources$,$curated$
@@ -4483,14 +4509,14 @@ $ppg industries$,$ppg$,$curated$
 $pps$,$pps$,$curated$
 $pqc$,$pqc$,$curated$
 $pqs$,$pqs$,$curated$
-$praire petro chem$,$prairie petrochem$,$curated$
-$praire petrochem$,$prairie petrochem$,$curated$
-$prairie petro chem$,$prairie petrochem$,$curated$
-$prairie petro chem of america$,$prairie petrochem$,$curated$
-$prairie petro chem of america, llp$,$prairie petrochem$,$curated$
-$prairie petrochem$,$prairie petrochem$,$curated$
-$prairie resources llc$,$prairie petrochem$,$curated$
-$prarie petro chem$,$prairie petrochem$,$curated$
+$praire petro chem$,$prairie$,$curated$
+$praire petrochem$,$prairie$,$curated$
+$prairie petro chem$,$prairie$,$curated$
+$prairie petro chem of america$,$prairie$,$curated$
+$prairie petro chem of america, llp$,$prairie$,$curated$
+$prairie petrochem$,$prairie$,$curated$
+$prairie resources llc$,$prairie$,$curated$
+$prarie petro chem$,$prairie$,$curated$
 $praxair$,$praxair$,$curated$
 $praxair/linde$,$praxair$,$curated$
 $precision$,$precision$,$curated$
@@ -4638,6 +4664,7 @@ $pumping services lloc$,$pumping$,$curated$
 $pumping services, llc$,$pumping$,$curated$
 $pumping services, llc.$,$pumping$,$curated$
 $pureline$,$pureline$,$curated$
+$pureline chemicals$,$pureline$,$curated$
 $pureline treatment systems$,$pureline$,$curated$
 $purestream services$,$purestream services$,$curated$
 $purline chemicals$,$pureline$,$curated$
@@ -4751,7 +4778,7 @@ $reagnet chemicals$,$reagent$,$curated$
 $rebellion energy$,$rebellion energy$,$curated$
 $recoil resources operating inc.$,$recoil resources operating$,$curated$
 $recoil resources operating inc.$,$recoil resources operating$,$curated$
-$red bluff resources$,$red bluff resources$,$curated$
+$red bluff resources$,$red bluff$,$curated$
 $red fork (usa) investments, inc$,$red fork$,$curated$
 $red fork (usa) investments, inc.$,$red fork$,$curated$
 $red fork (usa) investments, inc.$,$red fork$,$curated$
@@ -4788,6 +4815,7 @@ $reef services, llc$,$reef$,$curated$
 $reef/rockwater$,$reef$,$curated$
 $reff services,llc$,$reff services$,$curated$
 $refinery specialist, inc.$,$refinery specialties$,$curated$
+$refinery specialties$,$refinery specialties$,$curated$
 $refinery specialties, inc$,$refinery specialties$,$curated$
 $refinery specialties, inc.$,$refinery specialties$,$curated$
 $regant chemicals$,$reagent$,$curated$
@@ -5055,6 +5083,7 @@ $sand kings transport / the titan companies / quick$,$sand kings transport$,$cur
 $sand ridge$,$sand ridge$,$curated$
 $sand, llc$,$sand$,$curated$
 $sandalwood exploration, lp$,$sandalwood exploration$,$curated$
+$sandman exploration, llc$,$sandman exploration$,$curated$
 $sandpro$,$sandpro$,$curated$
 $sandridge$,$sandridge$,$curated$
 $sandridge energy$,$sandridge$,$curated$
@@ -5084,6 +5113,7 @@ $santrol, superior$,$santrol$,$curated$
 $santrol, superior silica$,$santrol$,$curated$
 $santrol/cadre$,$santrol$,$curated$
 $santroll$,$santrol$,$curated$
+$saragosa field services$,$saragosa field services$,$curated$
 $sargent$,$sargent$,$curated$
 $sargent unimin$,$sargent$,$curated$
 $sargent/imo,om$,$sargent$,$curated$
@@ -5338,6 +5368,7 @@ $sodium polyacrylate solution$,$not a company$,$curated$
 $sodium tetraborate decahydrate$,$not a company$,$curated$
 $sojourner drilling corporation$,$sojourner drilling corporation$,$curated$
 $solaris$,$solaris$,$curated$
+$solaris water midstream, llc$,$solaris$,$curated$
 $solenis$,$solenis$,$curated$
 $solnexus$,$solnexus$,$curated$
 $solnexus chemical$,$solnexus$,$curated$
@@ -5349,6 +5380,7 @@ $solvay usa inc$,$solvay$,$curated$
 $solvay usa inc.$,$solvay$,$curated$
 $solvay/chemplex$,$solvay$,$curated$
 $solvent$,$not a company$,$curated$
+$solvey$,$solvay$,$curated$
 $solvlchem, inc$,$solvlchem$,$curated$
 $sonerra resources corporation$,$sonerra resources corporation$,$curated$
 $sonterra energy, llc$,$sonterra energy$,$curated$
@@ -5471,6 +5503,7 @@ $steward energy ii, llc$,$steward energy$,$curated$
 $steward energy, llc$,$steward energy$,$curated$
 $stim$,$stim$,$curated$
 $stim oil$,$stim$,$curated$
+$stimchem$,$stimchem$,$curated$
 $stimlube$,$stimlube$,$curated$
 $stimlube ne$,$stimlube$,$curated$
 $stimlube w$,$stimlube$,$curated$
@@ -5658,6 +5691,7 @@ $tcs$,$tcs$,$curated$
 $tdx energy, llc$,$tdx energy$,$curated$
 $teakwood operating llc$,$teakwood operating$,$curated$
 $teal$,$teal$,$curated$
+$teal exploration llc$,$teal$,$curated$
 $teal natural resources$,$teal$,$curated$
 $team co2$,$team co2$,$curated$
 $tech management$,$tech management$,$curated$
@@ -5928,8 +5962,8 @@ $truox inc$,$truox$,$curated$
 $tss$,$tss$,$curated$
 $tts$,$tts$,$curated$
 $ttsi$,$ftsi$,$curated$
-$tucker energy services$,$tucker energy services$,$curated$
-$tucker energy services (tes)$,$tucker energy services$,$curated$
+$tucker energy services$,$tucker energy$,$curated$
+$tucker energy services (tes)$,$tucker energy$,$curated$
 $tug hill operating, llc$,$tug hill operating$,$curated$
 $tundra operating, llc$,$tundra operating$,$curated$
 $twilight energy llc$,$twilight energy$,$curated$
@@ -6391,6 +6425,7 @@ $zarvona energy$,$zarvona energy$,$curated$
 $zavanna, llc$,$zavanna$,$curated$
 $zeeospheres$,$zeeospheres$,$curated$
 $zenergy, inc.$,$zenergy$,$curated$
+$zl chemicals ltd$,$zl chemicals$,$curated$
 $ztc petro investments lp$,$ztc petro investments$,$curated$
 ,$not a company$,$curated$
 ,$not a company$,$curated$
@@ -6402,38 +6437,53 @@ $ztc petro investments lp$,$ztc petro investments$,$curated$
 ,$not a company$,$curated$
 ,$not a company$,$curated$
 ,$not a company$,$curated$
-$a shulman$,$a schulman$,$curated$
-$aquarius chemical$,$aquarius chemical$,$curated$
-$bayswater$,$bayswater$,$curated$
-$biosuite llc$,$biosuite$,$curated$
-$calfrac well services ltd.$,$calfrac$,$curated$
-$chemical solvents$,$chemical solvents$,$curated$
-$dash operating, llc$,$dash operating$,$curated$
-$diverters plus$,$diverter plus$,$curated$
-$first ascent operating, llc$,$first ascent$,$curated$
-$firstrike energy corporation$,$firstrike energy$,$curated$
-$glm energy, inc.$,$glm energy$,$curated$
-$haliburton energy services$,$halliburton$,$curated$
-$halliburtin$,$halliburton$,$curated$
-$integrity industries$,$integrity$,$curated$
-$jec operating$,$jec operating$,$curated$
-$jec operating, llc$,$jec operating$,$curated$
-$kirkpatrick oil company, inc$,$kirkpatrick oil$,$curated$
-$krc operating, llc$,$krc operating$,$curated$
-$lynx oklahoma operating llc$,$lynx oklahoma operating$,$curated$
-$newkumet exploration$,$newkumet exploration$,$curated$
-$newkumet exploration, inc.$,$newkumet exploration$,$curated$
-$nexgen$,$nexgen$,$curated$
-$nextier$,$nextier$,$curated$
-$nextier oilfield solutions$,$nextier$,$curated$
-$opeator$,$ambiguous$,$curated$
-$ospmicrocheck$,$osp$,$curated$
-$pureline chemicals$,$pureline$,$curated$
-$refinery specialties$,$refinery specialties$,$curated$
-$sandman exploration, llc$,$sandman exploration$,$curated$
-$saragosa field services$,$saragosa field services$,$curated$
-$solaris water midstream, llc$,$solaris$,$curated$
-$solvey$,$solvay$,$curated$
-$stimchem$,$stimchem$,$curated$
-$teal exploration llc$,$teal$,$curated$
-$zl chemicals ltd$,$zl chemicals$,$curated$
+$1$,$not a company$,$curated$
+$ace completions, llc$,$ace completions$,$curated$
+$allan baugh$,$allan baugh$,$curated$
+$ameredev$,$ameredev$,$curated$
+$ameredev operations llc$,$ameredev$,$curated$
+$beech resources$,$beech resources$,$curated$
+$beech resources llc$,$beech resources$,$curated$
+$blackstar$,$blackstar$,$curated$
+$blake produciton$,$blake production$,$curated$
+$brown oil & gas$,$brown oil & gas$,$curated$
+$caldwell$,$caldwell$,$curated$
+$catalysts$,$catalyst$,$curated$
+$championx$,$champion$,$curated$
+$chemical complex$,$chemical complex$,$curated$
+$contango resources, inc.$,$contango resources$,$curated$
+$diversified production llc$,$diversified$,$curated$
+$diversified resources inc$,$diversified$,$curated$
+$dpc industries inc$,$dpc$,$curated$
+$equinor$,$equinor$,$curated$
+$flying a pumping$,$flying a pumping$,$curated$
+$fractach$,$frac tech$,$curated$
+$fsti inc.$,$ftsi$,$curated$
+$grand mesa operating$,$grand mesa operating$,$curated$
+$jingang new material co., ltd$,$jingang new material$,$curated$
+$lonza inc.$,$lonza$,$curated$
+$ncs multistage, llc$,$ncs multistage$,$curated$
+$newstim$,$newstim$,$curated$
+$nine energy service$,$nine energy service$,$curated$
+$onecor services$,$onecor$,$curated$
+$paloma resources$,$paloma$,$curated$
+$patriot energy services llc$,$patriot$,$curated$
+$prairie gas company of oklahoma$,$prairie$,$curated$
+$pursuit oil & gas stx, llc$,$pursuit$,$curated$
+$ram fayette, llc$,$ram fayette$,$curated$
+$red bluff$,$red bluff$,$curated$
+$rockwater energy solutiions, inc.$,$rockwater$,$curated$
+$sabino energy services$,$sabino energy services$,$curated$
+$sergant unimin$,$sargent$,$curated$
+$signal peak silica, llc$,$signal peak$,$curated$
+$step energy$,$step$,$curated$
+$strategy oilfield$,$strategy oilfield$,$curated$
+$swinbank$,$swinbank$,$curated$
+$trans pacific oil$,$trans pacific oil$,$curated$
+$trans pacific oil corporation$,$trans pacific oil$,$curated$
+$tucker energy$,$tucker energy$,$curated$
+$tug hill operating$,$tug hill operating$,$curated$
+$ultrablend solutions$,$ultrablend$,$curated$
+$upland exploration llc$,$upland$,$curated$
+$us well servies$,$us well services$,$curated$
+$warwick investment group$,$warwick investment group$,$curated$

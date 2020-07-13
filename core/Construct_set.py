@@ -57,7 +57,7 @@ class Construct_set():
         self.zfilename = self.sources+zfilename+'.zip'
         self.stfilename = self.sources+stfilename+'.zip'
         self.make_files=make_files
-        self.picklefolder = self.tempfolder+zfilename+'_pickles/'
+        self.picklefolder = self.outdir+zfilename+'_pickles/'
         self.abbreviated = abbreviated # used to do partial constructions
         
     def initialize_dir(self,dir):

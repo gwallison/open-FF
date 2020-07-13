@@ -32,6 +32,8 @@ a new reference file to the main sources area.
 location data for all new records.  This is pretty much a hands-off
 process. 
 
+## curating text fields ##
+
 4) Run update_curated_files_PHASE_2.py from the main directory. 
 This code will create new CSV files in
 the /tmp directory that will be named the same as the 
@@ -49,3 +51,8 @@ status.
 directory, replacing the older versions.  
 
 You may then proceed to the main task: build_database.py
+
+##  Update CodeOcean
+It is optional to update the CodeOcean code and data.  To do this, upload
+all files that have changed, do a reproducible run, then submit for 
+publication.

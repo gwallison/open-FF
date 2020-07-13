@@ -58,10 +58,11 @@ class Read_FF():
                     
             inf.sort()
             infiles = [x for _,x in inf]  # now we have a well-sorted list
-            for fn in infiles:
+            for fn in infiles: #[-2:]:
                 with z.open(fn) as f:
                     print(f' -- processing {fn}')
                     t = pd.read_csv(f,low_memory=False,
+                                    #nrows=1000,
                                     dtype={'APINumber':'str'}
                                     # ignore pandas default_na values
 #                                    keep_default_na=False,na_values='')

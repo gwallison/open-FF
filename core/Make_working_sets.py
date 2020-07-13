@@ -41,6 +41,13 @@ class Make_working_sets():
              z.write(tmpfn,compress_type=zipfile.ZIP_DEFLATED)
         os.remove(tmpfn)
         
+    def save_compressed_pickle(self,df,fn):
+        tmpfn = fn+'.pkl'
+        df.to_pickle(tmpfn) # write in default directory for CodeOcean
+        with zipfile.ZipFile(self.outdir+fn+'.zip','w') as z:
+             z.write(tmpfn,compress_type=zipfile.ZIP_DEFLATED)
+        os.remove(tmpfn)
+        
     def save_full_set(self):
         print('   ** making "df_full_flat.zip" set **')
         full = self.tab_man.get_df_cas(keepcodes='',removecodes='',
@@ -48,18 +55,17 @@ class Make_working_sets():
         full = full.drop(['iSupplier','iPurpose','iTradeName','iUploadKey',
                           'iCASNumber','iIngredientName','ireckey',
                           'iOperatorName','is_carrier'],axis=1)
-        #print(full.info())
+        self.save_compressed_pickle(full,'full_pickle')
         self.save_compressed(full,'df_full_flat')
         
     def save_filtered_set(self,col_list=None):
-        print('   ** making "df_filtered_flat.zip" set **')
+        print('   ** making "df_filtered_flat.zip and filtered pickle" set **')
         if col_list==None : col_list = self.filtered_fields # use default
         df = self.tab_man.get_df_cas(keepcodes='A|M|3',
                                      removecodes='R|1|2|4|5',
                                      event_fields=[])
-        #print(f'In save_filter... {df.columns}')
         df = df.filter(col_list,axis=1)
-        #print(df.info())
+        self.save_compressed_pickle(df,'filtered_pickle')
         self.save_compressed(df,'df_filtered_flat')
 
         
