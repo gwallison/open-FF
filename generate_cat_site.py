@@ -10,7 +10,7 @@ a chemical catelog.
 import core.Construct_set as const_set
 import website_gen.web_gen as web_gen
 
-data_date = '2020-05-14'
+data_date = '2020-07-31'
 
 tab_const = const_set.Construct_set(fromScratch=False).get_full_set()
 

@@ -28,7 +28,7 @@ class Make_working_sets():
                                 'data_source', 'bgStateName', 'bgCountyName', 
                                 'date',
                                 'IngredientName', 'Supplier', 'bgSupplier', 
-                                'Purpose', 'CASNumber', 'bgCAS',
+                                'Purpose', 'TradeName', 'CASNumber', 'bgCAS',
                                 'bgIngredientName', 'proprietary', 
                                 'eh_Class_L1', 'eh_Class_L2', 'eh_CAS', 
                                 'eh_IngredientName', 'eh_subs_class', 

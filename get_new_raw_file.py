@@ -38,7 +38,7 @@ if force_archive:
 # define    
 sources = './sources/'
 archive = './archive/'
-datefn= './out/upload_dates.csv'
+datefn= './sources/upload_dates.csv'
 skyfn = 'sky_truth_final'
 afile = archive+f'ff_archive_{today.strftime("%Y-%m-%d")}.zip'
 currfn = 'testData'

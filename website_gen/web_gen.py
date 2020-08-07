@@ -30,6 +30,7 @@ class Web_gen():
         self.data_date = data_date
         self.outdir = './tmp/website/'
         self.css_fn = './website_gen/style.css'
+        #self.default_empty_fn = './website_gen/default_empty.html'
         self.jupyter_fn = './website_gen/chemical_report.html'
         self.ref_fn = './website_gen/ref.txt'
         self.filtered_fields = ['reckey', 'PercentHFJob', 'record_flags', 
@@ -38,7 +39,7 @@ class Web_gen():
                                 'APINumber', 'TotalBaseWaterVolume',
                                 'TotalBaseNonWaterVolume', 'FFVersion', 
                                 'TVD', 'StateName', 'StateNumber', 'CountyName', 
-                                'CountyNumber', 
+                                'CountyNumber', 'TradeName',
                                 'Latitude', 'Longitude', 'Projection',
                                 'data_source', 'bgStateName', 'bgCountyName', 
                                 'bgLatitude', 'bgLongitude', 'date',
@@ -53,6 +54,10 @@ class Web_gen():
                                          removecodes='R|1|2|4|5',
                                          event_fields=[])
         self.allrec = self.allrec.filter(self.filtered_fields,axis=1)
+        self.allrec['TradeName_trunc'] = np.where(self.allrec.TradeName.str.len()>30,
+                                                  self.allrec.TradeName.str[:30]+'...',
+                                                  self.allrec.TradeName)
+        self.minCount = 5
         # use this to make shortened versions
         if caslist != []:
             self.allrec = self.allrec[self.allrec.bgCAS.isin(caslist)]
@@ -137,13 +142,17 @@ class Web_gen():
             self.save_global_vals(self.num_events)
             
             tt = self.allrec[self.allrec.bgCAS==chem].copy()
-            tt.to_csv('website_gen/data.csv',index=False)
-            tt.to_csv(self.outdir+chem+'/data.csv',index=False)
-            self.make_jupyter_output()
-            an_fn = f'/analysis_{chem}.html'
-            #print(an_fn)
-            shutil.copyfile(self.jupyter_fn,self.outdir+chem+an_fn)
-
+            if len(tt)>self.minCount:
+                tt.to_csv('website_gen/data.csv',index=False)
+                tt.to_csv(self.outdir+chem+'/data.csv',index=False)
+                self.make_jupyter_output()
+                an_fn = f'/analysis_{chem}.html'
+                #print(an_fn)
+                shutil.copyfile(self.jupyter_fn,self.outdir+chem+an_fn)
+            else:
+                print(f'Too few records ({len(tt)}) to do analysis')
+                tt.to_csv(self.outdir+chem+'/data.csv',index=False)
+                #shutil.copyfile(self.default_empty_fn,self.outdir+chem+an_fn)
     def make_10perc_dict(self,fromScratch=True):
         if fromScratch:
             self.perc90dic = {}
@@ -246,6 +255,8 @@ class Web_gen():
                        f'{row.eh_Class_L2}',
                        f'<a target="_blank" href=https://chem.nlm.nih.gov/chemidplus/rn/{chem}> link </a>',
                        ]
+            if int(row.cnt) < self.minCount:
+                linelst[0] = f'# of records too small'
             s += self.add_table_line(linelst)
         s+= '</table>\n'    
         pg = self.compile_page(title=title,body=s,

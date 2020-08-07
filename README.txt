@@ -1,4 +1,4 @@
-README for FF-POC repository and project
+README for open-FF repository and project
 
 This CodeOcean capsule is an extension of the Proof of 
 Concept version of code to transform data from the online chemical disclosure site 
@@ -53,6 +53,12 @@ bgStateName and bgCountyName. When the Lat/Lon numbers in FF are too far from an
 county, we assume they are wrong and use the center of the county as the georeference.
 
 ******  open-FF  Version explanation ******
+
+Version 7: Data downloaded from FracFocus on July 31, 2020.  TradeName added
+   to exported data.
+
+Version 6: Save data tables in pickled form into results section so that it may be
+   exported to other projects.
 
 Version 5: Data downloaded from FracFocus on May 14, 2020.  No other changes.
 

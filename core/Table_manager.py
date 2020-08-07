@@ -127,6 +127,8 @@ class Construct_tables():
                       how='left',validate='m:1')
         df = df.merge(self.tables['purpose'].get_df(pur_fields),
                       on='iPurpose',how='left',validate='m:1')
+        df = df.merge(self.tables['tradename'].get_df(pur_fields),
+                      on='iTradeName',how='left',validate='m:1')
         return df.merge(self.tables['cas'].get_df(cas_fields),
                         on='iCASNumber',how='left',validate='m:1')
 
