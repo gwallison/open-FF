@@ -5,6 +5,13 @@ Created on Fri Jun 12 10:58:10 2020
 @author: Gary
 
 These are the routines used to find the differences between raw downloads
+Aug 2020 The hashing method, while successful on smaller scales, never was really
+a reliable way to find subtle difference between large data sets - I never really
+could track down what the problem was -- hashes were often different for what seemed to 
+be identical data sets.
+
+In the end, it was fairly simple and not too time consuming to just use direct 
+comparison of strings.  Much more straight forward.
 
 """
 
@@ -19,6 +26,19 @@ output = './out/'
 #upload_hash_ref = output+'upload_hash_ref.csv'
 exclude_files = ['archive_2018_08_28.zip','sky_truth_final.zip']
 
+
+
+def addBasicHash(df):
+    """return dataframe with IngredientKey only.  This is
+    used to find if there are any differences between downloads for each
+    disclosure.
+    Note that the disclosure hash is insensitive to row position
+    THIS IS THE FAST VERSION
+    """
+    df = df.fillna(-9)
+    df['rhash'] = pd.util.hash_pandas_object(df).astype('int64')    
+    return df[['IngredientKey','rhash']]
+
 def makeHashTable(df):
     """return dataframe with UploadKey and hash for each disclosure.  This is
     used to find if there are any differences between downloads for each
@@ -28,14 +48,20 @@ def makeHashTable(df):
     """
     #print(f'makeHashTable df.columns {df.info()}')
     #print(f'Head: {df.head()}')
-    df = df.fillna(-9)
-    df = df.sort_values(by=['UploadKey','IngredientKey'])
-    df = df.reset_index(drop=True)
-    #print(f'Head: {df[["UploadKey","IngredientKey"]].head(50)}')
+# =============================================================================
+#     df = df.fillna(-9)
+#     df = df.sort_values(by=['UploadKey','IngredientKey'])
+#     df = df.reset_index(drop=True)
+#     #print(f'Head: {df[["UploadKey","IngredientKey"]].head(50)}')
+# =============================================================================
     
     df['rhash'] = pd.util.hash_pandas_object(df).astype('int64')    
     tmp = df.groupby('UploadKey',as_index=False)[['rhash']].sum()
     tmp.rhash = tmp.rhash.astype('uint64')
+    gb = df.groupby('UploadKey',as_index=False)[['APINumber',
+                                                 'OperatorName',
+                                                 'JobEndDate']].first()
+    tmp = pd.merge(tmp,gb,on='UploadKey',how='left')
     return tmp
 
 def makeHashTable2(df):
@@ -88,46 +114,67 @@ def getNormalizedDF(df):
     work = df.fillna(-9)
     work = work[work.ingKeyPresent].sort_values(['UploadKey','IngredientKey'])
     work = work.reset_index(drop=True)
-    #work['rhash'] = pd.util.hash_pandas_object(work).astype('int64')
+    return work
+
+def getNormalizedBasic(df):
+    work = df.fillna(-9)
+    work = work.reset_index(drop=True)
     return work
 
 def compareFrameAsStrings(df1,df2):
     lst1 = getNormalizedStrLst(df1)
     lst2 = getNormalizedStrLst(df2)
-    detected_diff = False
     if len(lst1)!=len(lst2):
-        print(f'Number of lines: old={len(lst1)}, new={len(lst2)}')
         return True
-    with open('./tmp/silent_diff.csv','w') as f:
-        for i in range(len(lst1)):
-            #print(f'line {i}: {len(lst1[i])}, {len(lst2[i])}, {lst1[i]==lst2[i]}')
-            if lst1[i]!=lst2[i]:
-                detected_diff=True
-#                f.write(f'{i} ***\n{lst1[i]}\n{lst2[i]}\n')
-#                sm = difflib.SequenceMatcher(None,lst1[i],lst2[i])
-#                print(sm.get_matching_blocks())
-#            else:
-#                f.write(f'{i}\n{lst1[i]}\n{lst2[i]}\n')
-
-    return detected_diff
-
-def getExistingHash():
-    try:
-        existing = pd.read_csv(upload_hash_ref)
-    except:
-        existing = pd.DataFrame({'UploadKey':[],'last_hash':[]})
-    return existing
-   
+    for i in range(len(lst1)):
+        if lst1[i]!=lst2[i]:
+            return True
+    return False
 
 def compareHashTables(old,new):
+    old = old.rename({'rhash':'last_hash',
+                      'APINumber':'lastAPI',
+                      'OperatorName':'lastOperator',
+                      'JobEndDate':'lastDate'},axis=1)
     mg = pd.merge(old,new,on='UploadKey',how='outer',indicator=True)
-    #print(mg.info())
+    rtn = ''
     mg['diff'] = ~(mg.last_hash==mg.rhash)
     mg['dropped_upk'] = mg['_merge']=='left_only'
     mg['new_upk'] = mg['_merge']=='right_only'
     mg['silent_change']= (mg['_merge']=='both') & (mg['diff'])
-    mg.to_csv('./tmp/temp.csv')
-    return mg
+    if mg.new_upk.sum()>0:
+        rtn += f'new uploadkeys: {mg.new_upk.sum()}; '
+    if mg.dropped_upk.sum()>0:
+        rtn += f'dropped uploadkeys: {mg.dropped_upk.sum()}; '
+    if mg.silent_change.sum()>0:
+        rtn += f'silent changes: {mg.silent_change.sum()}; '
+    if mg['diff'].sum()>0:
+        rtn += f'record diffs: {mg["diff"].sum()}; '
+    cond = mg['diff'] | mg.dropped_upk | mg.new_upk | mg.silent_change
+    
+    return rtn,mg[cond].filter(['UploadKey','APINumber','OperatorName',
+                          'JobEndDate','diff','dropped_upk','new_upk',
+                          'silent_change'],axis=1)
+
+def compareHashBasic(old,new):
+    old = old.rename({'rhash':'last_hash'},axis=1)
+    mg = pd.merge(old,new,on='IngredientKey',how='outer',indicator=True)
+    rtn = ''
+    mg['diff'] = ~(mg.last_hash==mg.rhash)
+    mg['dropped_upk'] = mg['_merge']=='left_only'
+    mg['new_upk'] = mg['_merge']=='right_only'
+    mg['silent_change']= (mg['_merge']=='both') & (mg['diff'])
+    if mg.new_upk.sum()>0:
+        rtn += f'new ingKey: {mg.new_upk.sum()}; '
+    if mg.dropped_upk.sum()>0:
+        rtn += f'dropped ingKey: {mg.dropped_upk.sum()}; '
+    if mg.silent_change.sum()>0:
+        rtn += f'silent changes: {mg.silent_change.sum()}; '
+    if mg['diff'].sum()>0:
+        rtn += f'record diffs: {mg["diff"].sum()}; '
+    cond = mg['diff'] | mg.dropped_upk | mg.new_upk | mg.silent_change
+    
+    return rtn,mg[cond]
 
 def createInitialCompareList(exclude_files = ['archive_2018_08_28.zip']):
     """Returns a sorted list of all the files (expect those in "exclude") 

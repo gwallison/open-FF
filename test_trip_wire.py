@@ -16,22 +16,16 @@ skyfn = 'sky_truth_final'
 
 currfn = 'testData.zip'
 lastfn = 'testData_last.zip'
-# =============================================================================
-# t = const_set.Construct_set(fromScratch=True,
-#                             zfilename=currfn,
-#                             sources=sources,
-#                             outdir=outdir,
-#                             tempfolder=tempfolder,
-#                             stfilename=skyfn).get_quick_set()
-# df = t.get_df_cas(keepcodes='',removecodes='')
-# told = const_set.Construct_set(fromScratch=True,
-#                         zfilename=lastfn,
-#                         sources=sources,
-#                         outdir=outdir,
-#                         tempfolder=tempfolder,
-#                         stfilename=skyfn).get_quick_set()
-# olddf= told.get_df_cas(keepcodes='',removecodes='')
-# 
-# =============================================================================
+#lastfn = 'testData.zip'
+#lastfn = 'currentData.zip'
+lastfn = 'ff_archive_2020-07-24.zip'
+#lastfn = 'ff_archive_2020-03-20.zip'
 
-tw.runTripWire(currfn,lastfn)
+
+df = tw.runTripWire(currfn,lastfn)
+
+#tw.singleCompare(currfn,lastfn,apis=['42383406940000',
+#                                     '42461409710000',
+#                                     '35073265430000'])
+
+#tw.process_archive(fnindex=0)

@@ -23,7 +23,7 @@ from datetime import datetime
 
 force_archive = False # use sparingly, only when not doing routine checks.
 do_download = True # if False, will run routines without downloading first.
-do_tripwire = False
+do_tripwire = True
 upload_report = True # replaces last report on the web with the todays
 #do_silent_check = False
 
@@ -43,26 +43,11 @@ skyfn = 'sky_truth_final'
 afile = archive+f'ff_archive_{today.strftime("%Y-%m-%d")}.zip'
 currfn = 'testData'
 lastfn = 'testData_last'
-#currfn = 'ff_archive_2020-03-20'
 outdir = './out/'
 tempfolder = './tmp/'
 
 st = datetime.now() # start timer
 
-# =============================================================================
-# # if you are going to do silent check, first move last testData pickles
-# if do_silent_check:
-#     try: shutil.rmtree('./tmp/backup_testData_pickles')
-#     except:pass
-#     try: shutil.move('./tmp/lastTestData_pickles',
-#                     './tmp/backup_testData_pickles')
-#     except: pass
-#     try: shutil.copytree('./tmp/testData_pickles', #need an existing testData_pickles
-#                     './tmp/lastTestData_pickles')
-#     except: pass
-#     
-# 
-# =============================================================================
 # get and save files
 if do_download:
     url = 'http://fracfocusdata.org/digitaldownload/fracfocuscsv.zip'
@@ -70,7 +55,9 @@ if do_download:
     r = requests.get(url, allow_redirects=True,timeout=20.0)
     #print(f'Download completed in {endit-st}')
     if do_tripwire:
-        twire.backup_testData(infn=currfn,outfn=lastfn,sources=sources)
+        twire.backup_testData(infn=currfn+'.zip',
+                              outfn=lastfn+'.zip',
+                              sources=sources)
 
     open(sources+currfn+'.zip', 'wb').write(r.content)  # overwrites currfn file.
     if archive_file: open(afile, 'wb').write(r.content)
@@ -97,13 +84,7 @@ outdf.to_csv(datefn,index=False)
 t.pickleAll() # pickle so notebook has access to data.
 
 if do_tripwire:
-    told = const_set.Construct_set(fromScratch=True,
-                            zfilename=lastfn,
-                            sources=sources,
-                            outdir=outdir,
-                            tempfolder=tempfolder,
-                            stfilename=skyfn).get_quick_set()
-    olddf= told.get_df_cas(keepcodes='',removecodes='')
+    twire.runTripWire(currfn+'.zip',lastfn+'.zip')
 
 if upload_report:
     s= 'jupyter nbconvert --template=nbextensions --ExecutePreprocessor.allow_errors=True --ExecutePreprocessor.timeout=-1 --execute daily_report.ipynb --to=html '

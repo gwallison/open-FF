@@ -79,6 +79,59 @@ class Read_FF():
         final = pd.concat(dflist,sort=True)
         return final
         
+    def import_raw_as_str(self,varsToKeep=['UploadKey','APINumber',
+                                           'IngredientName','CASNumber',
+                                           'StateName','StateNumber',
+                                           'CountyName','CountyNumber',
+                                           'FederalWell','IndianWell',
+                                           'JobStartDate','JobEndDate',
+                                           'Latitude','Longitude',
+                                           'MassIngredient','OperatorName',
+                                           'PercentHFJob','PercentHighAdditive',
+                                           'Purpose','Supplier','TVD',
+                                           'TotalBaseWaterVolume','TotalBaseNonWaterVolume',
+                                           'TradeName','WellName',
+                                           'IngredientKey']):
+        """
+        """
+        dflist = []
+        with zipfile.ZipFile(self.zname) as z:
+            inf = []
+            for fn in z.namelist():
+                # the files in the FF archive with the Ingredient records
+                #  always start with this prefix...
+                if fn[:17]=='FracFocusRegistry':
+                    # need to extract number of file to correctly order them
+                    num = int(re.search(r'\d+',fn).group())
+                    inf.append((num,fn))
+                    
+            inf.sort()
+            infiles = [x for _,x in inf]  # now we have a well-sorted list
+            dtypes = {}
+            for v in varsToKeep:
+                dtypes[v] = 'str'
+            for fn in infiles[-2:]:
+                with z.open(fn) as f:
+                    print(f' -- processing {fn}')
+                    t = pd.read_csv(f,low_memory=False,
+                                    usecols=varsToKeep,
+                                    dtype=dtypes,
+                                    na_filter=False,
+                                    # ignore pandas default_na values
+#                                    keep_default_na=False,na_values='')
+                                    )
+                    # we need an indicator of the presence of IngredientKey
+                    # whitout keeping the whole honking thing around
+#                    t['ingKeyPresent'] = np.where(t.IngredientKey.isna(),
+#                                                  False,True)
+#                    t['raw_filename'] = fn
+#                    t['record_flags'] = 'B'  #bulk download flag (in allrec)
+#                    t['data_source'] = 'bulk' # for event table
+                    
+                    dflist.append(t)
+        final = pd.concat(dflist,sort=True)
+        return final
+
     def import_skytruth(self):
         """
         This function pulls in a pre-processed file with the Skytruth data.
