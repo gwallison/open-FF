@@ -20,7 +20,7 @@ class Construct_tables():
         self.event = fft.FF_table(keyf='UploadKey',pkldir=pkldir,
                                   other_fields=['JobEndDate','JobStartDate',
                                                 'iOperatorName',
-                                                'APINumber',
+                                                'APINumber', #'DisclosureKey',
                                                 'TotalBaseWaterVolume',
                                                 'TotalBaseNonWaterVolume',
                                                 'FFVersion','TVD',

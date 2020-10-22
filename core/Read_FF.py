@@ -110,7 +110,7 @@ class Read_FF():
             dtypes = {}
             for v in varsToKeep:
                 dtypes[v] = 'str'
-            for fn in infiles[-2:]:
+            for fn in infiles:
                 with z.open(fn) as f:
                     print(f' -- processing {fn}')
                     t = pd.read_csv(f,low_memory=False,

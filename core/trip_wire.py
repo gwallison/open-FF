@@ -10,6 +10,7 @@ import numpy as np
 import core.Find_silent_change as fsc
 import core.Read_FF as rff
 import shutil
+import difflib
 import os
 import datetime
 now = datetime.datetime.now()
@@ -36,7 +37,7 @@ metacols = ['APINumber','UploadKey','Latitude','TotalBaseWaterVolume',
             'TotalBaseNonWaterVolume','WellName']
 
 def fetch_input(fn=tripInput):
-    return pd.read_csv(fn,quotechar='$')
+    return pd.read_csv(fn,quotechar='$',dtype={'APINumber':'str'})
 
 def backup_testData(infn='testData.zip', outfn='testData_last.zip',
                     sources=sources):
@@ -67,11 +68,12 @@ def getDfForCompare_basic(fn,sources='./sources/'):
 
 def showDifference(uploadlst,olddf, df):
     outstr = ''
+    cols_affected = set()
     for uk in uploadlst:
         if fsc.compareFrameAsStrings(olddf[olddf.UploadKey==uk],
                                      df[df.UploadKey==uk]):
-            outstr += f'  Differences in {uk}\n'
-            outstr += '---------------------\n'
+            outstr += f'  Differences in {olddf.APINumber.iloc[0]} :: {uk} \n'
+            outstr += '---------------------------------------\n'
 
             conc = pd.merge(olddf[olddf.UploadKey==uk],df[df.UploadKey==uk],on='IngredientKey',how='outer',
                             indicator=True)
@@ -82,16 +84,29 @@ def showDifference(uploadlst,olddf, df):
                 y = col+'_y'
                 conc['comp'] = conc[x]==conc[y]
                 if conc.comp.sum()<len(conc):
+                    cols_affected.add(col)
                     if col in metacols:
                         outstr += f'{conc[~conc.comp][[x,y]].iloc[0]}\n'
-                        outstr += f'{col}, sum = {conc.comp.sum()}\n'
+                        #outstr += f'{col}, sum = {conc.comp.sum()}\n'
                         
                     else:                        
                         outstr += f'{conc[~conc.comp][[x,y]]}\n'
-                        outstr += f'{col}, sum = {conc.comp.sum()}\n'
-                    outstr += '\n---------------------------------------\n'
-    return outstr
+                        #outstr += f'{col}, sum = {conc.comp.sum()}\n'
+                    outstr += '---------------------------------------\n'
+    l = list(cols_affected)
+    sumtxt = ''
+    for c in l:
+        sumtxt += c+'; '
+    return outstr, sumtxt
 
+# =============================================================================
+# def compareByClosestMatch(olddf,df):
+#     oldstrs = fsc.getNormalizedStrLst(olddf)
+#     newstrs = fsc.getNormalizedStrLst(df)
+#     print(oldstrs[0:1])
+#     
+# 
+# =============================================================================
 def get_blank_record(cols,meta):
     rec = {}
     for m in meta:
@@ -101,12 +116,9 @@ def get_blank_record(cols,meta):
             rec[col] = 0
     return rec
 
-def compileBasicDifference(olddf,newdf,usedate='today'):
-    if usedate == 'today':
-        outfn = now.strftime("%Y-%m-%d")
-    else:
-        outfn = usedate
-    logtxt = ''
+def compileBasicDifference(olddf,newdf,outfn='unknown'):
+
+    logtxt = '\n*************  New Disclosures Added **************\n'
     gbnew = newdf.groupby(['APINumber','UploadKey'],as_index=False)['CASNumber'].count().reset_index(drop=True)
     gbold = olddf.groupby(['APINumber','UploadKey'],as_index=False)['CASNumber'].count().reset_index(drop=True)
     gbnew = gbnew.drop('CASNumber',axis=1)
@@ -119,29 +131,27 @@ def compileBasicDifference(olddf,newdf,usedate='today'):
                           'UploadKey':[],
                           'new_date':[],
                           'type_of_diff':[],
-                          'other':[],
                           'fields_changed':[]})
     ### New disclosures - 
     print(f' Finding unique new disclosures')
     for row in mg[mg._merge=='right_only'].itertuples(index=False):
         rec = pd.DataFrame({'APINumber':row.APINumber,
                             'UploadKey':row.UploadKey,
-                            'new_date':'unknown',
+                            'new_date':outfn, # date of the new archive
                             'type_of_diff':'new_only',
-                            'other':'',
                             'fields_changed':''},index=[0])
         outdf = pd.concat([outdf,rec],ignore_index=True,sort=True)
     logtxt += f'\n {len(mg[mg._merge=="right_only"])} new disclosures added.\n'
 
     ### Dropped disclosures        
+    logtxt = '\n*************  Old Disclosures Dropped **************\n'
     print(f' Finding dropped disclosures')
     dropped = []
     for row in mg[mg._merge=='left_only'].itertuples(index=False):
         rec = pd.DataFrame({'APINumber':row.APINumber,
                             'UploadKey':row.UploadKey,
-                            'new_date':'unknown',
+                            'new_date':outfn, # date of the new archive
                             'type_of_diff':'old_only',
-                            'other':'',
                             'fields_changed':''},index=[0])
         outdf = pd.concat([outdf,rec],ignore_index=True,sort=True)
         # save the disclosures
@@ -155,6 +165,7 @@ def compileBasicDifference(olddf,newdf,usedate='today'):
     
 
     ### Changed disclosures
+    logtxt += '\n*************  Disclosures Changed **************\n'    
     cols = newdf.columns.tolist()
     cols.remove('IngredientKey')
     #records = {}
@@ -170,15 +181,27 @@ def compileBasicDifference(olddf,newdf,usedate='today'):
 #    conc = pd.merge(olddf,newdf,on='IngredientKey',how='outer',indicator=True)
     conc = pd.merge(olddf,newdf,how='outer',indicator=True)
     apis = conc[conc._merge!='both'].APINumber.unique().tolist()
-    print(f'   -- number effected APIs: {len(apis)}')
+    print(f'   -- number affected APIs: {len(apis)}')
     for api in apis:
+        logtxt += 50*'*'+f'\n            << {api} >>\n'+50*'*'+'\n\n'
+        t = conc[conc.APINumber==api].copy()
+        logtxt += f'Shared IngredientKeys: {len(t[t._merge=="both"])}\n'
+        logtxt += f'             Old only: {len(t[t._merge=="left_only"])}\n'
+        logtxt += f'             New only: {len(t[t._merge=="right_only"])}\n\n'
         fn = diffdir+api+'_mixed_'+outfn+'.csv'
-        conc[conc.APINumber==api].to_csv(fn)
+        t.to_csv(fn)
         #make the summary text
-        
-#        showdiff = showDifference(olddf[olddf.APINumber==api],
-#
-#                                  newdf[newdf.APINumber==api])        
+        told = olddf[olddf.APINumber==api].copy()
+        tnew = newdf[newdf.APINumber==api].copy()
+        lst = told.UploadKey.unique().tolist()
+        sumtxt,dftxt = showDifference(lst,told,tnew)
+        logtxt += sumtxt
+        rec = pd.DataFrame({'APINumber':api,
+                            'UploadKey':' -- ',
+                            'new_date':outfn, # date of the new archive
+                            'type_of_diff':'changes within disclosure',
+                            'fields_changed':dftxt},index=[0])
+        outdf = pd.concat([outdf,rec],ignore_index=True,sort=True)
 
 #    df = pd.DataFrame.from_dict(records,orient='index')
 #    return df
@@ -239,7 +262,6 @@ def runTripWire(newfn,oldfn,sources='./sources/',usedate='today'):
     logtxt += f'Input archives: newer: {newfn} (= y, right)\n\n'
 
 
-    tripdf = fetch_input()
     ### First look for any differences between old and new and record pointer
 # =============================================================================
 #     print('   -- remove new disclosures from newest download')
@@ -249,12 +271,36 @@ def runTripWire(newfn,oldfn,sources='./sources/',usedate='today'):
 #     print(f'      ending:   {len(df)}\n')
 #     print(f'\n\n - detecting differences across entire old and new dataframes')
 # =============================================================================
-    outdf,comptxt = compileBasicDifference(olddf,df)
+    outdf,comptxt = compileBasicDifference(olddf,df,outfn)
     outdf = outdf.reset_index()
+    outdf = outdf[['APINumber','UploadKey','new_date',
+                   'type_of_diff','fields_changed']]
     outdf.to_csv(tripdir+outfn+'.csv')
+
+
+    # Flag any changes (including new disclosures) for API in the 
+    #  hand-curated list.
+    tripdf = fetch_input()
+    outAPI = outdf.APINumber.unique().tolist()
+    #print(outAPI)
+    tt = ''
+    for row in tripdf.itertuples(index=False):
+        #print(f'Checking for trip check: {row.APINumber}')
+        if row.APINumber in outAPI:
+           tt += '*'*66+'\n'
+           tt += '*'*66+'\n'
+           tt += f'*********** TRIP WIRE DETECTION OF API {row.APINumber} ************\n'
+           tt += f'            -- {row.note}, {row.date_added}\n'
+           tt += f'\n{outdf[outdf.APINumber==row.APINumber].head(3).T}\n'
+           tt += '*'*66+'\n'
+           tt += '*'*66+'\n\n'
+    if tt!='':
+        print(tt)
+        logtxt = tt + '\n' + logtxt
+        
     with open(tripdir+outfn+'.txt','w') as f:
         f.write(logtxt+comptxt)
-   
+
 # =============================================================================
 #     cols = list(outdf.columns)
 #     cols.remove('index')
@@ -323,11 +369,45 @@ def singleCompare(newfn,oldfn,apis=['37007205130000']):
         print(f'\n\n*** Trip wire detection for APINumber = {api} ***')
         print(showDifference(lst,old,new))
         logtxt += f'\n*** Trip wire detection for APINumber = {api} ***\n'
-        logtxt += showDifference(lst,old,new)
+        outstr, sumtxt = showDifference(lst,old,new)
+        logtxt += outstr + '\n'
+        logtxt += sumtxt + '\n\n\n'
     with open(tripdir+'single_compare.txt','w') as f:
         f.write(logtxt)
 
+def compareByClosest(newfn,oldfn,apis=['37007205130000'],dropcols=[]):
+    print("Fetching raw verison of today's data set for tripwire")
+    df = getDfForCompare(newfn)
+    print("Fetching raw verison of previous data set for tripwire")
+    olddf = getDfForCompare(oldfn)
+    d = difflib.Differ()
+    ###  First look for targeted trip wires
+    #logtxt = f'Single API comparisons for {today}\n\n'
+    for api in apis:
+        print(f'Checking {api}')
+        new = df[df.APINumber==api].copy()
+        old = olddf[olddf.APINumber==api].copy()
+        print(f'\n\n*** Trip wire detection for APINumber = {api} ***')
+        if dropcols:
+            new = new.drop(dropcols,axis=1)
+            old = old.drop(dropcols,axis=1)
+        oldstrs = fsc.getNormalizedStrLst(old)
+        newstrs = fsc.getNormalizedStrLst(new)
+        for l in newstrs:
+            res = difflib.get_close_matches(l,oldstrs,n=1,cutoff=0)
+            #print(d.compare(l,res[0]))
+            print(res)
 
+# =============================================================================
+#         print(showDifference(lst,old,new))
+#         logtxt += f'\n*** Trip wire detection for APINumber = {api} ***\n'
+#         outstr, sumtxt = showDifference(lst,old,new)
+#         logtxt += outstr + '\n'
+#         logtxt += sumtxt + '\n\n\n'
+#     with open(tripdir+'single_compare.txt','w') as f:
+#         f.write(logtxt)
+# 
+# =============================================================================
 def process_archive(fnindex=0,lastindex=None):
     filelst = os.listdir(arcdir)
     for ex in exclude_files:

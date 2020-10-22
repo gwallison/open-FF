@@ -117,6 +117,7 @@ class Construct_set():
             
                 self._banner('Add_External_datasets')
                 aed.add_Elsner_table(tab_const,sources=self.sources,outdir=self.outdir)
+                aed.add_WellExplorer_table(tab_const,sources=self.sources,outdir=self.outdir)
                 aed.add_TEDX_ref(tab_const,sources=self.sources,outdir=self.outdir)
                 aed.add_TSCA_ref(tab_const,sources=self.sources,outdir=self.outdir)
 

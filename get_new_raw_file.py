@@ -21,6 +21,7 @@ import shutil
 from datetime import datetime
 #import hashlib
 
+
 force_archive = False # use sparingly, only when not doing routine checks.
 do_download = True # if False, will run routines without downloading first.
 do_tripwire = True
@@ -63,7 +64,7 @@ if do_download:
     if archive_file: open(afile, 'wb').write(r.content)
 
 ## Now process file
-print(f'Working on data set')
+print('Working on data set')
 outdf = pd.read_csv(datefn)
 uklst = outdf.UploadKey.unique()
 t = const_set.Construct_set(fromScratch=True,
@@ -77,14 +78,16 @@ ndf = df[~df.UploadKey.isin(uklst)].copy() # just the new ones
 gb = ndf.groupby('UploadKey',as_index=False)['iUploadKey'].count()
 gb['date_added'] = today.strftime("%Y-%m-%d")
 gb.rename({'iUploadKey':'num_records'}, inplace=True,axis=1)
-print(f'Number of added events: {len(gb)}\n\n')
 
 outdf = pd.concat([outdf,gb],sort=True)
 outdf.to_csv(datefn,index=False)
 t.pickleAll() # pickle so notebook has access to data.
 
+
 if do_tripwire:
     twire.runTripWire(currfn+'.zip',lastfn+'.zip')
+
+print(f'\nNumber of added events: {len(gb)}\n\n')
 
 if upload_report:
     s= 'jupyter nbconvert --template=nbextensions --ExecutePreprocessor.allow_errors=True --ExecutePreprocessor.timeout=-1 --execute daily_report.ipynb --to=html '

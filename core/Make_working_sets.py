@@ -26,13 +26,15 @@ class Make_working_sets():
                                 'CountyNumber', 'Latitude', 'Longitude',
                                 'Projection','bgLatitude', 'bgLongitude', 
                                 'data_source', 'bgStateName', 'bgCountyName', 
-                                'date',
+                                'date', 'WellName',
                                 'IngredientName', 'Supplier', 'bgSupplier', 
                                 'Purpose', 'TradeName', 'CASNumber', 'bgCAS',
                                 'bgIngredientName', 'proprietary', 
                                 'eh_Class_L1', 'eh_Class_L2', 'eh_CAS', 
                                 'eh_IngredientName', 'eh_subs_class', 
-                                'eh_function','is_on_TEDX']
+                                'eh_function','is_on_TEDX',
+                                'we_Pathway','we_Toxicity','we_FoodAdditive',
+                                'we_T3DB','we_ProteinTargets']
         
     def save_compressed(self,df,fn):
         tmpfn = fn+'.csv'

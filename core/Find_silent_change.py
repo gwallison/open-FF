@@ -103,10 +103,11 @@ def makeHashTable3(df):
         hashlst.append(sumit)
     return pd.DataFrame({'UploadKey':upk,'rhash':hashlst})
 
-def getNormalizedStrLst(df):
+def getNormalizedStrLst(df,withhash=False):
     work = df.sort_values(['IngredientKey'])
     work = work.reset_index(drop=True)
-    work['rhash'] = pd.util.hash_pandas_object(work).astype('int64')
+    if withhash:
+        work['rhash'] = pd.util.hash_pandas_object(work).astype('int64')
     str_tmp = work.to_csv().encode('utf-8')
     return str_tmp.splitlines(keepends=True)
  
@@ -122,8 +123,8 @@ def getNormalizedBasic(df):
     return work
 
 def compareFrameAsStrings(df1,df2):
-    lst1 = getNormalizedStrLst(df1)
-    lst2 = getNormalizedStrLst(df2)
+    lst1 = getNormalizedStrLst(df1,withhash=True)
+    lst2 = getNormalizedStrLst(df2,withhash=True)
     if len(lst1)!=len(lst2):
         return True
     for i in range(len(lst1)):

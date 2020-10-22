@@ -17,15 +17,19 @@ skyfn = 'sky_truth_final'
 currfn = 'testData.zip'
 lastfn = 'testData_last.zip'
 #lastfn = 'testData.zip'
-#lastfn = 'currentData.zip'
-lastfn = 'ff_archive_2020-07-24.zip'
+lastfn = 'currentData.zip'
+#lastfn = 'ff_archive_2020-07-24.zip'
 #lastfn = 'ff_archive_2020-03-20.zip'
 
 
-df = tw.runTripWire(currfn,lastfn)
+#df = tw.runTripWire(currfn,lastfn)
 
-#tw.singleCompare(currfn,lastfn,apis=['42383406940000',
-#                                     '42461409710000',
-#                                     '35073265430000'])
+#tw.singleCompare(currfn,lastfn,apis=['42329438480000',
+#                                     '42329438560000',
+#                                     '42329438550000',
+#                                     '42329438490000'])
+
+tw.compareByClosest(currfn,lastfn,apis=['42329438480000'],
+                    dropcols=['UploadKey'])
 
 #tw.process_archive(fnindex=0)

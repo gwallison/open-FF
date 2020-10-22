@@ -54,6 +54,12 @@ county, we assume they are wrong and use the center of the county as the georefe
 
 ******  open-FF  Version explanation ******
 
+Version 8: Added WellName field to filtered data output.  Added chemical ingredient
+   codes from the WellExplorer project (www.WellExplorer.org) -- fields with
+   the prefix 'we_' are from that project. 
+   See https://doi.org/10.1093/database/baaa053
+
+
 Version 7: Data downloaded from FracFocus on July 31, 2020.  TradeName added
    to exported data.
 

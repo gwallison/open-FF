@@ -31,6 +31,32 @@ def add_Elsner_table(tab_manager=None,sources='./sources/',
 
     tab_manager.tables['cas'].replace_df(mg,add_all=True)
 
+def add_WellExplorer_table(tab_manager=None,sources='./sources/',
+                     outdir='./out/',
+                     wefn='well_explorer_corrected.csv'):
+    """Add the WellExplorer data table. """
+    print('Adding WellExplorer table to CAS table')
+    casdf = tab_manager.tables['cas'].get_df()
+    wedf = pd.read_csv(sources+wefn)
+    #print(wedf.head())
+    # checking overlap first:
+    wecas = list(wedf.we_CASNumber.unique())
+    dfcas = list(casdf.bgCAS.unique())
+    with open(outdir+'wellexplorer_non_overlap.txt','w') as f:
+        f.write('**** bgCAS numbers without an WellExplorer entry: *****\n')
+        for c in dfcas:
+            if c not in wecas:
+                f.write(f'{c}\n')
+        f.write('\n\n***** WellExplorer CAS numbers without a FF entry: *****\n')
+        for c in wecas:
+            if c not in dfcas:
+                f.write(f'{c}\n')
+
+    mg = pd.merge(casdf,wedf,left_on='bgCAS',right_on='we_CASNumber',
+                  how='left',validate='m:1')
+
+    tab_manager.tables['cas'].replace_df(mg,add_all=True)
+
     
 def add_TEDX_ref(tab_manager=None,sources='./sources/',
                  outdir='./out/',
