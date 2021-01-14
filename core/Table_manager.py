@@ -30,6 +30,7 @@ class Construct_tables():
                                                 'Projection',
                                                 'WellName','FederalWell',
                                                 'IndianWell','data_source',
+                                                'published', # added jan.2021
                                                 'iUploadKey'])
         self.allrec = fft.FF_table(keyf='reckey',pkldir=pkldir,
                                    other_fields=['iSupplier',
@@ -136,3 +137,38 @@ class Construct_tables():
         """if loc_fields and ing_fields left empty, all fields will be merged
         from those tables"""
         return self.tables['event'].get_df(fields=event_fields)
+    
+    def make_flag_set(self,lst,pos=True):
+        if pos:
+            inc_set = 'MC+%'
+        else:
+            inc_set = '12e?LNR'
+        s = set()
+        for i in lst:
+            a = set(i)
+            for j in a:
+                s.add(j)
+        out = ''
+        for f in inc_set:
+            if f in s:
+                out+=f
+        return out
+
+    def compile_ev_level_flags(self):
+        df = self.tables['allrec'].get_df(['iUploadKey','record_flags'])  
+        #print(f'Len df: {len(df)}, unique upk: {len(df.iUploadKey.unique())}')
+        gb = df.groupby('iUploadKey')['record_flags'].apply(list).reset_index(name='lsts')
+        #print(f'len gb: {len(gb)}  unique upk: {len(gb.iUploadKey.unique())}')
+        gb['ev_flag_pos'] = gb.lsts.map(lambda x: self.make_flag_set(x,pos=True))
+        gb['ev_flag_neg'] = gb.lsts.map(lambda x: self.make_flag_set(x,pos=False))
+        #print(f'len gb: {len(gb)}  unique upk: {len(df.iUploadKey.unique())}')
+        gb = gb.drop('lsts',axis=1)
+        #print(f'len gb: {len(gb)} unique upk: {len(df.iUploadKey.unique())}')
+        #print(gb.columns)        
+        gb = gb.merge(self.tables['event'].get_df(),
+                      on='iUploadKey',how='right',validate='1:1')
+        #print(gb.columns)
+        #print(gb.head())
+        self.update_table_df(gb, 'event')
+        #self.tables['event'].replace_df(new_df=gb)
+        #print(self.tables['event'].get_df().columns)

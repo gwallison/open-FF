@@ -245,7 +245,7 @@ class Web_gen():
                        f'<a href= {chem}/data.csv> filtered data </a>',
 #                       f'<div class="cas"><a href={chem+"/"+chem+".html"}>{chem} </a></div>',
                        f'<div class="cas">{chem}</div>',
-                       f'{ingred}',
+                       f'<div class="ingredient">{ingred}</div>',
 #                       f'{numrecs}',
                        f'{int(row.cnt)}',
                        f'{per90}',
@@ -286,7 +286,9 @@ class Web_gen():
         s += self.add_table_line([f'<a href=by_eh_class.html> Sort by Elsner/Hoelzer classes </a>'])
         s += self.add_table_line([f'<a href=TEDX_only.html> Show only chemicals on TEDX list </a>'])
         s+= '</table><br><br>\n'    
-        s+='For more information about these data, see this website: <a href=https://frackingchemicaldisclosure.wordpress.com/> Unearthing Data About Fracking Chemicals </a> '
+        s+='For more information about these data, see this website: <a href=https://frackingchemicaldisclosure.wordpress.com/> Open-FF </a> '
+        s+='<br><br>For a report on the most recent disclosures added to FracFocus, see this website: <a href=https://g89econwgjw0fxnhywjzbg-on.drv.tw/webshare/daily_report.html> New Disclosure Report </a> '
+
         pg = self.compile_page(title='open_FF Catalog',body=s,
                                header='open_FF Catalog home page')
         self.save_page(webtxt=pg,fn='index.html')

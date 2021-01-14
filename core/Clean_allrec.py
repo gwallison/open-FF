@@ -37,11 +37,14 @@ import pandas as pd
 import numpy as np
 import core.Column_tools as col_tools
 
+#skytruth_dupe_fn = 'skytruth_dup_choice.csv'
 
 class Clean_allrec():
     def __init__(self,tab_manager = None,sources='./sources/'):  
         self.tab_man = tab_manager
         self.sources = sources
+        #self.skyt_non_dupes = list(pd.read_csv(self.sources+skytruth_dupe_fn).UploadKey)
+                
     
     def process_records(self):
         # process Supplier
@@ -67,7 +70,19 @@ class Clean_allrec():
                      on='iUploadKey',how='right',validate='1:m')
         t = t.groupby(['UploadKey','date','APINumber'],as_index=False)[['reckey','iUploadKey']].first()
         t['dupes'] = t.duplicated(subset=['APINumber','date'],keep=False)
+
+
+# =============================================================================
+#         print('  -- removing most recent skytruth disclosures from list')
+#         print(f't.dupes True = {t.dupes.sum()}')
+#         t.dupes = np.where(t.UploadKey.isin(self.skyt_non_dupes),
+#                            False,
+#                            t.dupes)
+#         print(f't.dupes True = {t.dupes.sum()}')
+# 
+# =============================================================================
         dupes = list(t[t.dupes].iUploadKey.unique())
+
         print(f'  -- flagging {len(dupes)} disclosures')
         df.record_flags = np.where(df.iUploadKey.isin(dupes),
                                      df.record_flags.str[:]+'-2',

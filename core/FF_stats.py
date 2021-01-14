@@ -55,7 +55,9 @@ class FF_stats():
     def _coerce_dtype(self):
         """ some columns need to be coerced into their native data type - that
         is, pandas assigns them to the wrong type when importing the raw.  """
-        bools = ['FederalWell','IndianWell','IngredientMSDS']
+        bools = [#'FederalWell',
+                 #'IndianWell',
+                 'IngredientMSDS']
         for b in bools:
             self.df[b] = self.df[b].astype('bool')
         
@@ -84,7 +86,9 @@ class FF_stats():
             if (self.df[col].dtype=='float64')|(self.df[col].dtype=='int64'):
                 perc_non_na = len(self.df[~self.df[col].isna()])/tot *100
                 if perc_non_na >0:
-                    non_zero = round(len(self.df[self.df[col]!=0])/tot * 100,2)
+                    ## Assuming valid numbers are NON-NEGATIVE!
+                    cond1 = (self.df[col]>0)|(self.df[col]<0)
+                    non_zero = round(len(self.df[cond1])/tot * 100,2)
                 else:
                     non_zero = ' - '
                 out+='{:>25}: {:>12} {:>12}\n'.format(col,

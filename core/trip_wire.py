@@ -61,7 +61,7 @@ def getDfForCompare(fn,sources='./sources/'):
 def getDfForCompare_basic(fn,sources='./sources/'):
     fn = sources+fn
     raw_df = rff.Read_FF(zname=fn).import_raw_as_str() # (na_filter=False)
-    raw_df = raw_df[~(raw_df.IngredientKey=='')]
+    #raw_df = raw_df[~(raw_df.IngredientKey=='')]
     #print(raw_df.info())
     return raw_df
     
@@ -133,7 +133,15 @@ def compileBasicDifference(olddf,newdf,outfn='unknown'):
                           'type_of_diff':[],
                           'fields_changed':[]})
     ### New disclosures - 
-    print(f' Finding unique new disclosures')
+    print(' Finding unique new disclosures')
+    new_upk = list(mg[mg._merge=='right_only'].UploadKey.unique())
+    if new_upk:
+        new_rawfn = list(newdf[newdf.UploadKey.isin(new_upk)].raw_filename.unique())
+        logtxt += '   New disclosures were found in:\n'
+        print('   New disclosures were found in:')
+        for i in new_rawfn:
+            print(f'    -- {i}')
+            logtxt+= f'    -- {i}\n'
     for row in mg[mg._merge=='right_only'].itertuples(index=False):
         rec = pd.DataFrame({'APINumber':row.APINumber,
                             'UploadKey':row.UploadKey,
@@ -144,8 +152,8 @@ def compileBasicDifference(olddf,newdf,outfn='unknown'):
     logtxt += f'\n {len(mg[mg._merge=="right_only"])} new disclosures added.\n'
 
     ### Dropped disclosures        
-    logtxt = '\n*************  Old Disclosures Dropped **************\n'
-    print(f' Finding dropped disclosures')
+    logtxt += '\n*************  Old Disclosures Dropped **************\n'
+    print(' Finding dropped disclosures')
     dropped = []
     for row in mg[mg._merge=='left_only'].itertuples(index=False):
         rec = pd.DataFrame({'APINumber':row.APINumber,
@@ -169,6 +177,11 @@ def compileBasicDifference(olddf,newdf,outfn='unknown'):
     cols = newdf.columns.tolist()
     cols.remove('IngredientKey')
     #records = {}
+    # now drop raw_filenum so it doesn't show in all shifted disclosures
+    olddf = olddf.drop('raw_filename',axis=1)    
+    newdf = newdf.drop('raw_filename',axis=1)    
+
+    
     print('   -- merge old and new for finding differences')
     # remove records where API/upK are not in both
     olddf = pd.merge(olddf,mg[~(mg._merge=='left_only')][['APINumber','UploadKey']],
@@ -181,7 +194,7 @@ def compileBasicDifference(olddf,newdf,outfn='unknown'):
 #    conc = pd.merge(olddf,newdf,on='IngredientKey',how='outer',indicator=True)
     conc = pd.merge(olddf,newdf,how='outer',indicator=True)
     apis = conc[conc._merge!='both'].APINumber.unique().tolist()
-    print(f'   -- number affected APIs: {len(apis)}')
+    print(f'\nTRIPWIRE: number affected APIs: {len(apis)}')
     for api in apis:
         logtxt += 50*'*'+f'\n            << {api} >>\n'+50*'*'+'\n\n'
         t = conc[conc.APINumber==api].copy()
@@ -190,7 +203,7 @@ def compileBasicDifference(olddf,newdf,outfn='unknown'):
         logtxt += f'             New only: {len(t[t._merge=="right_only"])}\n\n'
         fn = diffdir+api+'_mixed_'+outfn+'.csv'
         t.to_csv(fn)
-        #make the summary text
+        #make the summary text, and don't compare raw_filename
         told = olddf[olddf.APINumber==api].copy()
         tnew = newdf[newdf.APINumber==api].copy()
         lst = told.UploadKey.unique().tolist()
@@ -260,7 +273,20 @@ def runTripWire(newfn,oldfn,sources='./sources/',usedate='today'):
     logtxt = f'Tripline log created: {now}\n'
     logtxt += f'Input archives: older: {oldfn} (= x, left) \n'
     logtxt += f'Input archives: newer: {newfn} (= y, right)\n\n'
-
+    
+    #logtxt +=  'Records in each raw file:\n'
+    oldcnts = olddf.value_counts(['raw_filename']).to_frame('counts').reset_index()
+    newcnts = df.value_counts(['raw_filename']).to_frame('counts').reset_index()
+# =============================================================================
+#     print(oldcnts)
+#     print(oldcnts.info())
+# #    oldcnts.columns = ['raw_filename','counts']
+#     newcnts = df.value_counts(['raw_filename'])
+#     newcnts.columns = ['raw_filename','counts']
+# =============================================================================
+    allcnts = pd.merge(oldcnts,newcnts,on='raw_filename',how='right').sort_values('raw_filename')
+    logtxt += 'Raw input files that have different record numbers:\n'
+    logtxt += f'{allcnts[allcnts.counts_x!=allcnts.counts_y].to_string()}\n\n'
 
     ### First look for any differences between old and new and record pointer
 # =============================================================================
@@ -380,7 +406,7 @@ def compareByClosest(newfn,oldfn,apis=['37007205130000'],dropcols=[]):
     df = getDfForCompare(newfn)
     print("Fetching raw verison of previous data set for tripwire")
     olddf = getDfForCompare(oldfn)
-    d = difflib.Differ()
+    #d = difflib.Differ()
     ###  First look for targeted trip wires
     #logtxt = f'Single API comparisons for {today}\n\n'
     for api in apis:
@@ -424,7 +450,5 @@ def process_archive(fnindex=0,lastindex=None):
                     usedate=tdate)    
         cntr += 1
 if __name__ == '__main__':
-    #print(fsc.createInitialCompareList())
-# =============================================================================
     runTripWire(None,None)
    

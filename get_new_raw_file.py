@@ -6,10 +6,15 @@ Created on Sun Nov 24 14:43:54 2019
 @author: Gary
 This script is used to download a new raw set, save it if the 
 day of the week is in the list, and look for new events.
-It will also record how many records are in each new event.
+It will also record how many records are in each new event, runs
+tripwire and uploads a webpage summary for general access.
 
 This script runs independently of the main build_database set.  It is designed 
-to run autonomously, usually executed from a crontab command.
+to run autonomously, can be executed from a crontab command.
+
+occasionally the download won't work, probably because of something on the
+FF end.  Currently this script just exits with an exception and does not
+retry.
 """
 
 import core.Construct_set as const_set
@@ -26,7 +31,7 @@ force_archive = False # use sparingly, only when not doing routine checks.
 do_download = True # if False, will run routines without downloading first.
 do_tripwire = True
 upload_report = True # replaces last report on the web with the todays
-#do_silent_check = False
+
 
 today = datetime.today()
 if today.weekday() in [4]: # Monday= 0, Sunday = 6

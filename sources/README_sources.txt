@@ -50,3 +50,7 @@ uploadKey_ref.csv - list of disclosures with the results of the 'best guess'
 valid_but_empty.csv - list of CAS numbers from raw FracFocus that are valid 
    in a format sense, but do not link to real chemicals.  This file is created 
    by hand.
+   
+well_explorer_corrected.csv - cleaned up version of the full ingredient table 
+   from WellExplorer.org.  Removed are non-valid CASNumber records.
+   

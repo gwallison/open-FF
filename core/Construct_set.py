@@ -104,6 +104,7 @@ class Construct_set():
             if not self.abbreviated:
                 self._banner('Generate_composite_fields')
                 gen_fields.Gen_composite_fields(tab_manager=tab_const).make_infServiceCo()
+                gen_fields.Gen_composite_fields(tab_manager=tab_const).make_geo_clusters()
 
             self._banner('Categorize_CAS')
             cat_rec.Categorize_CAS(tab_manager=tab_const,
@@ -122,6 +123,9 @@ class Construct_set():
                 aed.add_TSCA_ref(tab_const,sources=self.sources,outdir=self.outdir)
 
 
+            self._banner('Compile event level flags')
+            tab_const.compile_ev_level_flags()
+            
             self._banner('pickle all tables')
             tab_const.pickleAll()
 

@@ -137,17 +137,46 @@ record_flags - this field holds all generated codes about each record. It is in 
         record may also have valid mass information).
     B - Raw data source for this record is the FracFocus bulk download
     C - This record has been identified as a carrier or base fluid record. 
+    D - Latitude and Longitude pair appear to be out of the recorded county,
+        However, bgLatitude and bgLongitude are not adjusted; they are the 
+        same as raw.
+    F - Latitude and Longitude are likely reversed.  bgLatitude is set to
+        Longitude and bgLongitude is set to Latitude.
+    G - Latitude and Longitude are probably insuffieciently detailed to identify
+        well pad location. The geolocations have only a few decimal places.
+        bgLatitude and bgLongitude are not adjusted; they are the same as raw.
     L - This code indicates a location datum (lat or lon) seems outside 
         APINumber implied location. bgLatitude and/or bgLongitude have
-        beed adjusted
+        beed adjusted from the Latitude/Longitude (See codes O,D,F,G)
     M - This code indicates valid mass (in bgMass) for this chemical.
     N - This code indicates a location name mistake (state or county names 
-        do not match state or county codes).
+        do not match state or county codes). bgStateName and bgCountyName are
+        adjusted to match APINumber indication.
+    O - Latitude and Longitude are illegal values. bgLatitude and bgLongitude
+        are set to geographic center of the county.
     P - Valid CAS. The CASNumber of this record exactly matches (after some cleanup)
         an authoritative CAS number.
     R - This record is redundant within the event and should be excluded in any
         calculations.
-    S - This record has been identified as the only carrier record in the event.
+    S - This disclosure has been auto-identified as having only a single carrier 
+        record in the event, a necessary condition of the calculation of mass.
+    T - The APINumber given for this disclosure (usually fromm SkyTruth) is
+        truncated so it originally only included 9 or 10 characters.  It has
+        been filled out to 14 characters with zeros.
     Y - Raw data source for this record is the SkyTruth pdf scraping archive.
 
+we_FoodAdditive - From the WellExplorer Ingredient table.  See 
+    https://doi.org/10.1093/database/baaa053 for field description.
+
+we_Pathway - From the WellExplorer Ingredient table.  See 
+    https://doi.org/10.1093/database/baaa053 for field description.
+
+we_ProteinTargets - From the WellExplorer Ingredient table.  See 
+    https://doi.org/10.1093/database/baaa053 for field description.
+
+we_T3DB - From the WellExplorer Ingredient table.  See 
+    https://doi.org/10.1093/database/baaa053 for field description.
+
+we_Toxicity - From the WellExplorer Ingredient table.  See 
+    https://doi.org/10.1093/database/baaa053 for field description.
 

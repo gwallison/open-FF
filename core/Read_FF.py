@@ -29,7 +29,7 @@ import core.FF_stats as ffstats
 class Read_FF():
     
     def __init__(self,zname='./sources/currentData.zip',
-                 skytruth_name='./sources/sky_tryth_final.zip',
+                 skytruth_name='./sources/sky_truth_final.zip',
                  outdir = './out/',
                  tab_const=None,gen_raw_stats=False):
         self.zname = zname
@@ -58,12 +58,14 @@ class Read_FF():
                     
             inf.sort()
             infiles = [x for _,x in inf]  # now we have a well-sorted list
-            for fn in infiles: #[-2:]:
+            for fn in infiles: #[-1:]:
                 with z.open(fn) as f:
                     print(f' -- processing {fn}')
                     t = pd.read_csv(f,low_memory=False,
                                     #nrows=1000,
-                                    dtype={'APINumber':'str'}
+                                    dtype={'APINumber':'str',
+                                           'FederalWell':'str',
+                                           'IndianWell':'str'}
                                     # ignore pandas default_na values
 #                                    keep_default_na=False,na_values='')
                                     )
@@ -124,7 +126,7 @@ class Read_FF():
                     # whitout keeping the whole honking thing around
 #                    t['ingKeyPresent'] = np.where(t.IngredientKey.isna(),
 #                                                  False,True)
-#                    t['raw_filename'] = fn
+                    t['raw_filename'] = fn
 #                    t['record_flags'] = 'B'  #bulk download flag (in allrec)
 #                    t['data_source'] = 'bulk' # for event table
                     
@@ -132,6 +134,39 @@ class Read_FF():
         final = pd.concat(dflist,sort=True)
         return final
 
+    def import_skytruth_as_str(self,varsToKeep=['UploadKey','APINumber',
+                                           'IngredientName','CASNumber',
+                                           'StateName','StateNumber',
+                                           'CountyName','CountyNumber',
+                                           'JobEndDate',
+                                           'Latitude','Longitude',
+                                           'OperatorName',
+                                           'PercentHFJob','PercentHighAdditive',
+                                           'Purpose','Supplier','TVD',
+                                           'TotalBaseWaterVolume',
+                                           'TradeName','WellName']):
+        """
+        Like import_raw_as_str, but for SkyTruth data        
+        """
+        dtypes = {}
+        for v in varsToKeep:
+            dtypes[v] = 'str'
+        with zipfile.ZipFile(self.stname) as z:
+            fn = z.namelist()[0]
+            with z.open(fn) as f:
+                print(f' -- processing {fn}')
+                t = pd.read_csv(f,low_memory=False,
+                                quotechar='$',quoting=csv.QUOTE_ALL,
+                                usecols=varsToKeep,
+                                dtype=dtypes,
+                                na_filter=False,
+                                # ignore pandas default_na values
+#                                    keep_default_na=False,na_values='')
+                                )
+                t['raw_filename'] = 'SkyTruth'
+        return t
+    
+    
     def import_skytruth(self):
         """
         This function pulls in a pre-processed file with the Skytruth data.
@@ -162,6 +197,10 @@ class Read_FF():
                 t['raw_filename'] = 'SkyTruth'
                 t['record_flags'] = 'Y'  #skytruth flag
                 t['data_source'] = 'SkyTruth'
+                cond1 = (t.APINumber.str.len()==9)|(t.APINumber.str.len()==10)
+                t.record_flags = np.where(cond1,
+                                          t.record_flags+'-T',
+                                          t.record_flags)
                 t.APINumber = np.where(t.APINumber.str.len()==13, #shortened state numbers
                                        '0'+ t.APINumber,
                                        t.APINumber)
@@ -187,3 +226,14 @@ class Read_FF():
         t.drop(columns=self.dropList,inplace=True)
         assert(len(t)==len(t.reckey.unique()))
         return t
+    
+    def import_all_str(self,varsToKeep=['UploadKey','Latitude','Longitude']):
+        t = pd.concat([self.import_raw_as_str(varsToKeep),
+                       self.import_skytruth_as_str(varsToKeep)],
+                       sort=True)
+        t.reset_index(drop=True,inplace=True) #  single integer as index
+        #print(t.columns)
+        return t
+         
+if __name__ == '__main__':
+    t = Read_FF().import_all_str()

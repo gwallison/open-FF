@@ -54,11 +54,22 @@ county, we assume they are wrong and use the center of the county as the georefe
 
 ******  open-FF  Version explanation ******
 
+Version 9: Correct FF_stats.py calculation for percent non-zero in the integer
+    and float section. Generate geographic clusters as proxy of wellpad identity;
+    clusters are found in the string field "clusterID". (Note that a specific clusterID will NOT be
+    consistent across data set versions in the way that UploadKey is; don't depend
+    on it!).  The fields FederalWell and IndianWell have been changed to string type -
+    previously, they were boolean (T/F) but that type does not allow for empty
+    cells which occurs in the SkyTruth data, leading to misinformation.
+    Modified input SkyTruth APINumber to detect duplicate disclosures more completely.
+    This results in many SkyTruth disclosures being flagged as duplicates.
+
+Version 8.1: Correct slight documentation omission.
+
 Version 8: Added WellName field to filtered data output.  Added chemical ingredient
    codes from the WellExplorer project (www.WellExplorer.org) -- fields with
-   the prefix 'we_' are from that project. 
-   See https://doi.org/10.1093/database/baaa053
-
+   the prefix 'we_' are from that project. See https://doi.org/10.1093/database/baaa053
+   Data download from FracFocus on October 23, 2020.
 
 Version 7: Data downloaded from FracFocus on July 31, 2020.  TradeName added
    to exported data.

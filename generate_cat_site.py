@@ -9,12 +9,14 @@ a chemical catelog.
 """
 import core.Construct_set as const_set
 import website_gen.web_gen as web_gen
+#import website_gen.API_web_gen as API_gen
 
-data_date = '2020-07-31'
+data_date = '2020-10-23'
 
 tab_const = const_set.Construct_set(fromScratch=False).get_full_set()
 
 wg = web_gen.Web_gen(tab_man=tab_const,data_date=data_date)
-wg.make_chem_list()
-wg.make_all_catalogs()
+#wg.make_chem_list()
+#wg.make_all_catalogs()
 wg.make_front_page()
+
