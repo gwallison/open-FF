@@ -60,9 +60,9 @@ county, we assume they are wrong and use the center of the county as the georefe
     consistent across data set versions in the way that UploadKey is; don't depend
     on it!).  The fields FederalWell and IndianWell have been changed to string type -
     previously, they were boolean (T/F) but that type does not allow for empty
-    cells which occurs in the SkyTruth data, leading to misinformation.
-    Modified input SkyTruth APINumber to detect duplicate disclosures more completely.
-    This results in many SkyTruth disclosures being flagged as duplicates.
+    cells which occurs in the SkyTruth data, leading to misinformation. Added
+    PercentHighAdditive to full data output to allow for better investigations
+    of TradeName usage.
     Data download from FracFocus on January 15, 2021.
 
 **Version 8.1**: Correct slight documentation omission.

@@ -35,6 +35,7 @@ class Construct_tables():
         self.allrec = fft.FF_table(keyf='reckey',pkldir=pkldir,
                                    other_fields=['iSupplier',
                                                  'iPurpose','iTradeName',
+                                                 'PercentHighAdditive', # added Jan 2021
                                                  'PercentHFJob','MassIngredient',
                                                  'ingKeyPresent',
                                                  'iUploadKey', #'iAPINumber',

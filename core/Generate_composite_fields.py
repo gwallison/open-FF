@@ -49,6 +49,10 @@ class Gen_composite_fields():
         self.tab_man.update_table_df(ev,'event')
        
 ####  generate geo-clusters
+####    as of version 9.0, only one set of clusters is created and
+####    much of the cluster stats are not used.  Needs to be refactored
+####    if that stays the case, or put into use.
+
 
     def makeObj(self,lat,lon,upK,opN='?',API='?',wellname='?', date='?'):
         return {'upK':upK, 'lat':lat, 'lon':lon, 'opN':opN, 'API': API, 'wn':wellname, 'date': date}

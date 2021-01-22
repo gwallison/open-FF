@@ -17,7 +17,7 @@ bulk_fn = 'currentData'
 #bulk_fn = 'testData'
 processFromScratch = True
 make_output_files = False
-do_abbrev = False
+do_abbrev = True
 
 import core.Construct_set as const_set
 
